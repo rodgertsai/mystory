@@ -1,752 +1,360 @@
 <!doctype html>
+<!-- Re-generated: 2026-08-23 | Includes 24 archetypes, interactive narrative_axes, and AI Prompt Exporter. -->
 <html lang="zh-TW">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>溫馨故事 12 大套路解析與生成器</title>
+    <title>溫馨故事 24 大套路解析與生成器</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap");
-      body {
-        font-family: "Noto Sans TC", sans-serif;
-      }
-      .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
-      }
-      .custom-scrollbar::-webkit-scrollbar-track {
-        background: #f1f5f9;
-      }
-      .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 4px;
-      }
+      body { font-family: "Noto Sans TC", sans-serif; }
+      .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
   </head>
-  <body class="bg-slate-50 text-slate-800 min-h-screen">
+  <body class="min-h-screen bg-slate-50 text-slate-800">
     <header class="bg-amber-600 text-white shadow-md">
-      <div
-        class="max-w-6xl mx-auto px-6 py-6 flex flex-wrap justify-between items-center gap-4"
-      >
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-6">
         <div>
-          <h1 class="text-2xl font-bold tracking-wide">
-            溫馨故事 12 大套路解析與生成器
-          </h1>
-          <p class="text-amber-100 text-sm mt-1">
-            12 Story Archetypes & Narrative Blueprint Generator
-          </p>
+          <h1 class="text-2xl font-bold tracking-wide">溫馨故事 24 大套路解析與生成器</h1>
+          <p class="mt-1 text-sm text-amber-100">24 Story Archetypes &amp; Narrative Blueprint Generator</p>
         </div>
         <div class="flex gap-2">
-          <label
-            class="cursor-pointer bg-amber-700 hover:bg-amber-800 text-white px-4 py-2 rounded-lg text-sm transition shadow"
-          >
-            匯入 JSON 檔
-            <input type="file" id="fileInput" accept=".json" class="hidden" />
-          </label>
-          <button
-            id="resetBtn"
-            class="bg-slate-700 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm transition shadow"
-          >
-            重置 12 大套路預設資料
-          </button>
+          <label class="cursor-pointer rounded-lg bg-amber-700 px-4 py-2 text-sm shadow transition hover:bg-amber-800">匯入 JSON 檔<input type="file" id="fileInput" accept=".json,application/json" class="hidden" /></label>
+          <button id="resetBtn" class="rounded-lg bg-slate-700 px-4 py-2 text-sm shadow transition hover:bg-slate-800">重置預設資料</button>
         </div>
       </div>
     </header>
 
-    <main
-      class="max-w-6xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8"
-    >
-      <!-- 左側面板：故事生成與原型庫 -->
-      <section class="lg:col-span-7 space-y-6">
-        <!-- 故事生成互動卡片 -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <div class="flex items-center justify-between mb-4">
-            <h2
-              class="text-lg font-bold text-slate-800 flex items-center gap-2"
-            >
-              <span class="w-3 h-3 bg-amber-500 rounded-full"></span>
-              故事核心生成引擎
-            </h2>
-            <button
-              id="randomGenBtn"
-              class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-xl text-sm font-medium transition shadow flex items-center gap-1"
-            >
-              🎲 隨機排列組合故事
-            </button>
+    <main class="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 py-8 lg:grid-cols-12">
+      <section class="space-y-6 lg:col-span-7">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div class="mb-4 flex items-center justify-between gap-4">
+            <h2 class="flex items-center gap-2 text-lg font-bold"><span class="h-3 w-3 rounded-full bg-amber-500"></span>故事核心生成引擎</h2>
+            <button id="randomGenBtn" class="rounded-xl bg-amber-500 px-4 py-2 text-sm font-medium text-white shadow transition hover:bg-amber-600">🎲 隨機排列組合故事</button>
           </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label class="block text-xs font-semibold text-slate-500 mb-1"
-                >選擇敘事原型 (Archetype)</label
-              >
-              <select
-                id="archetypeSelect"
-                class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-amber-500 outline-none"
-              ></select>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-500 mb-1"
-                >融入核心感人元素 (Trigger)</label
-              >
-              <select
-                id="elementSelect"
-                class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-amber-500 outline-none"
-              ></select>
-            </div>
+          <div class="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <label class="block text-xs font-semibold text-slate-500">選擇敘事原型<select id="archetypeSelect" class="mt-1 w-full rounded-xl border border-slate-300 bg-slate-50 p-2.5 text-sm outline-none focus:ring-2 focus:ring-amber-500"></select></label>
+            <label class="block text-xs font-semibold text-slate-500">融入核心感人元素<select id="elementSelect" class="mt-1 w-full rounded-xl border border-slate-300 bg-slate-50 p-2.5 text-sm outline-none focus:ring-2 focus:ring-amber-500"></select></label>
           </div>
-
-          <!-- 生成的故事大綱骨架 -->
-          <div
-            id="generatedOutline"
-            class="mt-4 p-5 bg-amber-50/60 rounded-xl border border-amber-200/70 space-y-3"
-          >
-            <h3
-              id="storyTitle"
-              class="text-base font-bold text-amber-900 leading-snug"
-            >
-              載入中...
-            </h3>
-            <div
-              class="text-xs text-amber-800 font-mono bg-amber-100/70 p-2.5 rounded-lg"
-              id="storyFormula"
-            ></div>
-
-            <div
-              class="space-y-2.5 text-sm text-slate-700 mt-3"
-              id="storyStages"
-            >
-              <!-- 敘事骨架自動填入 -->
+          
+          <div class="space-y-3 rounded-xl border border-amber-200/70 bg-amber-50/60 p-5">
+            <div class="flex items-start justify-between gap-2">
+              <h3 id="storyTitle" class="text-base font-bold leading-snug text-amber-900">載入中...</h3>
+            </div>
+            <div id="storyFormula" class="rounded-lg bg-amber-100/70 p-2.5 font-mono text-xs text-amber-800"></div>
+            <div id="storyAxes" class="rounded-lg border border-amber-200 bg-white/70 p-2.5 text-xs text-slate-600"></div>
+            <div id="storyStages" class="mt-3 space-y-2.5 text-sm text-slate-700"></div>
+            
+            <!-- AI Prompt 複製區塊 -->
+            <div class="mt-4 border-t border-amber-200/80 pt-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="text-xs font-bold text-amber-900 flex items-center gap-1">
+                  🤖 AI 故事生成 Prompt
+                </span>
+                <button id="copyPromptBtn" class="flex items-center gap-1.5 rounded-lg bg-amber-600 px-3.5 py-1.5 text-xs font-medium text-white shadow-sm transition hover:bg-amber-700 active:scale-95">
+                  <span id="copyIcon">📋</span>
+                  <span id="copyBtnText">一鍵複製 AI Prompt</span>
+                </button>
+              </div>
+              <textarea id="promptPreview" readonly class="mt-2.5 h-28 w-full resize-none rounded-lg border border-amber-300/80 bg-white/90 p-2.5 font-mono text-[11px] leading-relaxed text-slate-700 outline-none focus:ring-1 focus:ring-amber-500"></textarea>
             </div>
           </div>
         </div>
 
-        <!-- 敘事原型庫清單 -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h2
-            class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"
-          >
-            <span class="w-3 h-3 bg-indigo-500 rounded-full"></span>
-            故事原型解析庫 (<span id="archetypeCount">0</span>)
-          </h2>
-          <div
-            id="archetypeList"
-            class="space-y-4 max-h-[520px] overflow-y-auto custom-scrollbar pr-2"
-          >
-            <!-- 原型列表卡片 -->
-          </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 class="mb-4 flex items-center gap-2 text-lg font-bold"><span class="h-3 w-3 rounded-full bg-indigo-500"></span>故事原型解析庫 (<span id="archetypeCount">0</span>)</h2>
+          <div id="archetypeList" class="custom-scrollbar max-h-[520px] space-y-4 overflow-y-auto pr-2"></div>
         </div>
       </section>
 
-      <!-- 右側面板：感人維度與 JSON 編輯 -->
-      <section class="lg:col-span-5 space-y-6">
-        <!-- 感人維度圖表 -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h2
-            class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"
-          >
-            <span class="w-3 h-3 bg-rose-500 rounded-full"></span>
-            感人元素維度分析
-          </h2>
-          <div id="elementsContainer" class="space-y-4">
-            <!-- 權重進度條 -->
-          </div>
+      <section class="space-y-6 lg:col-span-5">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 class="mb-4 flex items-center gap-2 text-lg font-bold"><span class="h-3 w-3 rounded-full bg-rose-500"></span>感人元素維度分析</h2>
+          <div id="elementsContainer" class="space-y-4"></div>
         </div>
 
-        <!-- 即時 JSON 編輯/檢視 -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <div class="flex items-center justify-between mb-3">
-            <h2
-              class="text-lg font-bold text-slate-800 flex items-center gap-2"
-            >
-              <span class="w-3 h-3 bg-emerald-500 rounded-full"></span> JSON
-              資料檢視/修改
-            </h2>
-            <button
-              id="applyJsonBtn"
-              class="bg-slate-800 hover:bg-slate-900 text-white text-xs px-3 py-1.5 rounded-lg transition"
-            >
-              套用 JSON
-            </button>
-          </div>
-          <textarea
-            id="jsonEditor"
-            class="w-full h-96 bg-slate-900 text-emerald-400 font-mono text-xs p-4 rounded-xl custom-scrollbar outline-none focus:ring-2 focus:ring-emerald-500 resize-y"
-            spellcheck="false"
-          ></textarea>
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 class="mb-1 flex items-center gap-2 text-lg font-bold"><span class="h-3 w-3 rounded-full bg-sky-500"></span>敘事組合軸</h2>
+          <p class="mb-4 text-xs text-slate-500">可手動指定每一軸，與任一故事套路交叉使用，讓短影音題材更不易重複。</p>
+          <div id="axesContainer" class="space-y-3"></div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div class="mb-3 flex items-center justify-between"><h2 class="flex items-center gap-2 text-lg font-bold"><span class="h-3 w-3 rounded-full bg-emerald-500"></span>JSON 資料檢視／修改</h2><button id="applyJsonBtn" class="rounded-lg bg-slate-800 px-3 py-1.5 text-xs text-white transition hover:bg-slate-900">套用 JSON</button></div>
+          <textarea id="jsonEditor" class="custom-scrollbar h-96 w-full resize-y rounded-xl bg-slate-900 p-4 font-mono text-xs text-emerald-400 outline-none focus:ring-2 focus:ring-emerald-500" spellcheck="false"></textarea>
         </div>
       </section>
     </main>
 
     <script>
-      // 完整 12 大套路 + 5 大維度資料庫
       const defaultData = {
-        dataset_summary: {
-          total_stories_analyzed: 100,
-          archetypes_count: 12,
-          description: "精細化 12 大溫馨敘事套路與感人元素觸發機制",
+        "dataset_summary": {
+          "total_stories_analyzed": 100,
+          "archetypes_count": 24,
+          "description": "24 大溫馨敘事套路與感人元素觸發機制；為 45 秒動畫 short 設計。"
         },
-        narrative_archetypes: [
-          {
-            archetype_id: "ARCH-01",
-            archetype_name: "對稱代價與錯位深情 (Symmetric Sacrifice)",
-            core_formula: "雙方各自傾其所有 + 陰錯陽差的禮物 + 愛的純粹度昇華",
-            representative_stories: ["《麥琪的禮物》", "老夫妻互贈紀念物"],
-            story_structure: {
-              setup:
-                "雙方皆處於物資極度貧乏的窘境，但都渴望在重要節日給予對方最大驚喜。",
-              catalyst:
-                "各自暗中賣掉了自身最珍視的象徵性寶物，去換取能搭配對方寶物的禮物。",
-              climax:
-                "揭曉時刻雙方發現彼此的心愛之物已不復存在，新禮物在物理層面失去了實用價值。",
-              resolution:
-                "物質價值歸零，但確認了彼此在對方心中的最高順位，情感昇華至頂峰。",
-            },
-          },
-          {
-            archetype_id: "ARCH-02",
-            archetype_name: "極限奉獻與耗盡自我 (Altruistic Self-Depletion)",
-            core_formula: "無保留的物質/生命剝離 + 換取他者希望 + 精神永恆",
-            representative_stories: [
-              "《快樂王子》",
-              "《最後一片葉子》",
-              "《給予樹》",
-              "《夏綠蒂的網》",
-            ],
-            story_structure: {
-              setup:
-                "受助者身陷絕境（重病、飢寒或即將被淘汰），自身毫無逆轉能力。",
-              catalyst:
-                "奉獻者決定以自身的羽翼、寶石、顏料或壽命為代價介入局勢。",
-              climax:
-                "在風雨交加的最後關頭，奉獻者傾注了最後一絲力量完成守護。",
-              resolution:
-                "奉獻者雖然消逝或殘缺，但其創造的生機讓受助者重獲新生。",
-            },
-          },
-          {
-            archetype_id: "ARCH-03",
-            archetype_name: "終生守候與跨界忠誠 (Interspecies Devotion)",
-            core_formula: "非功利信任 + 超越生死/時間/空間的本能守望",
-            representative_stories: [
-              "忠犬八公",
-              "企鵝丁丁",
-              "忠狗巴比",
-              "《再見了，可魯》",
-              "獅子克里斯蒂安",
-            ],
-            story_structure: {
-              setup: "脆弱或孤獨的人類與動物建立了深厚默契與日常依戀。",
-              catalyst:
-                "因死亡、疾病或不可抗力，人類主體突然從日常軌道中永久缺席。",
-              climax:
-                "動物無視嚴寒風雨與歲月流逝，日復一日在約定地點持續守候。",
-              resolution:
-                "守候行為打破物種界限，成為超越理性計算的忠誠精神圖騰。",
-            },
-          },
-          {
-            archetype_id: "ARCH-04",
-            archetype_name: "互為救贖與戒斷重生 (Mutual Salvation)",
-            core_formula: "兩個破碎邊緣主體 + 偶然相遇 + 相互支撐脫離泥淖",
-            representative_stories: [
-              "街貓鮑伯",
-              "《白兔玩偶》",
-              "《幸福綠皮書》",
-              "自閉症少年與治療馬",
-            ],
-            story_structure: {
-              setup: "主角深陷成癮、孤立或社會偏見中，處於人生的絕對低谷。",
-              catalyst:
-                "另一個同樣脆弱或邊緣的生命意外闖入，迫使主角學會承擔責任。",
-              climax:
-                "在面臨退縮誘惑時，為了守護對方的安危而爆發出戰勝惡習的勇氣。",
-              resolution: "在彼此的照映與支持下，雙方重新找回尊嚴並重返社會。",
-            },
-          },
-          {
-            archetype_id: "ARCH-05",
-            archetype_name: "殘酷世界裡的溫柔謊言 (Protective Illusion)",
-            core_formula: "極端苦難/死神逼近 + 成人構築童真防護罩 + 守護微光",
-            representative_stories: [
-              "《美麗人生》",
-              "《螢火蟲之墓》的糖果罐",
-              "舊金山蝙蝠俠小子",
-            ],
-            story_structure: {
-              setup:
-                "極致殘酷的外部現實（戰爭、納粹集中營、末期絕症）步步進逼。",
-              catalyst:
-                "守護者用幽默、想像力將恐怖的現實解構成一場好玩的闖關遊戲。",
-              climax:
-                "守護者在暗處承擔著生死一線的壓力，全力維持謊言不被戳破。",
-              resolution: "受保護者的心靈免受創傷侵蝕，帶著純真與愛走向未來。",
-            },
-          },
-          {
-            archetype_id: "ARCH-06",
-            archetype_name: "童真入侵與冰封融化 (Thawing the Cynic)",
-            core_formula:
-              "冷酷/孤僻長者 + 闖入的純真生命 + 卸下防備重新擁抱世界",
-            representative_stories: [
-              "《聖誕頌歌》",
-              "《阿爾卑斯山的少女》",
-              "《綠山牆的安妮》",
-              "《天外奇蹟》",
-            ],
-            story_structure: {
-              setup: "主角因早年創傷封閉內心，性情孤僻古怪，被周遭世界排斥。",
-              catalyst:
-                "一個不按牌理出牌、充滿好奇心的純真晚輩或生物強行進入其生活。",
-              climax:
-                "長者遭遇危機或情緒崩潰時，闖入者以毫無保留的擁抱給予安慰。",
-              resolution:
-                "長者卸下堅硬外殼，冰封心靈徹底解凍，重獲愛人的能力。",
-            },
-          },
-          {
-            archetype_id: "ARCH-07",
-            archetype_name:
-              "維護尊嚴的匿名隱蔽善意 (Dignified Stealth Kindness)",
-            core_formula: "弱者困窘 + 施予者巧妙避開施捨感 + 留存對方體面",
-            representative_stories: [
-              "《一碗陽春麵》",
-              "餐飲懸掛咖啡",
-              "京都拉麵洗碗抵餐費",
-              "街頭修鞋匠",
-            ],
-            story_structure: {
-              setup:
-                "貧困或困窘的求助者鼓起巨大勇氣走進店內或尋求基本生存物資。",
-              catalyst:
-                "提供者敏銳察覺其難處，但刻意不做出居高臨下的憐憫施捨。",
-              climax:
-                "透過多加半球麵、設計微不足道的勞務交換或匿名預付款巧妙給予幫助。",
-              resolution:
-                "受助者的自尊被妥善保護，這份體面成為支撐其奮鬥的長久動力。",
-            },
-          },
-          {
-            archetype_id: "ARCH-08",
-            archetype_name: "制度暫停與全城共謀善意 (Collective Humanity)",
-            core_formula:
-              "冰冷規則/戰火前線 + 人性良知集體共振 + 創造短暫烏托邦",
-            representative_stories: [
-              "1914年聖誕節休戰",
-              "甘德鎮接納滯留客機",
-              "日本小站的一人列車",
-              "為聽障同學全班學手語",
-            ],
-            story_structure: {
-              setup: "僵化的官僚體制、戰火或突發災難將弱者或滯留群體逼入絕境。",
-              catalyst:
-                "少數個體率先跨越對立陣營或突破常規流程，發出善意信號。",
-              climax: "集體良知被瞬間點燃，成百上千的陌生人自發加入協作支援。",
-              resolution:
-                "冰冷的現實制度短暫讓位給人性溫暖，證明了人性的根本向善。",
-            },
-          },
-          {
-            archetype_id: "ARCH-09",
-            archetype_name: "抵抗遺忘的日常儀式 (Rituals Against Decay)",
-            core_formula:
-              "失憶/衰老侵蝕 + 數十年如一日的微小堅持 + 超越生物機能的愛",
-            representative_stories: [
-              "失憶老翁每日重新求婚",
-              "父親每天餐巾紙留言",
-              "為盲人妻子種植花海",
-              "《可可夜總會》",
-            ],
-            story_structure: {
-              setup: "不可逆的神經退化或衰老正一點一滴剝奪角色的認知與記憶。",
-              catalyst:
-                "守候者建立了一套固定的日常儀式（送花、彈唱同一首歌、寫紙條）。",
-              climax:
-                "在記憶幾乎歸零的混沌時刻，特定旋律或氣味讓受損大腦奇蹟般閃現認同。",
-              resolution: "證明了愛不是邏輯記憶，而是刻在靈魂深處的情感本能。",
-            },
-          },
-          {
-            archetype_id: "ARCH-10",
-            archetype_name:
-              "超越時空的信物與延遲對話 (Intergenerational Echoes)",
-            core_formula:
-              "離世前的預留安排 + 隨成長逐步解鎖的信物 + 跨時空深情撫慰",
-            representative_stories: [
-              "已故母親的20年生日錄音帶",
-              "寫給未來女婿的信",
-              "《真愛每一天》",
-              "《解憂雜貨店》",
-            ],
-            story_structure: {
-              setup:
-                "至親面臨生命終點，遺憾無法陪伴年幼的孩子經歷未來的重要人生節點。",
-              catalyst:
-                "在病榻前秘密預先錄製錄音、信件或封存具有成長意義的紀念信物。",
-              climax:
-                "孩子在成年、結婚或遭遇重大挫折時拆開對應信件，聽見來自過去的指引。",
-              resolution:
-                "生死阻隔被打破，跨越時空的愛成為孩子終其一生的精神盾牌。",
-            },
-          },
-          {
-            archetype_id: "ARCH-11",
-            archetype_name: "愚公移山式的純粹執念 (Monumental Devotion)",
-            core_formula:
-              "面對不可撼動的自然或殘酷命運 + 憑一己之力長年死磕 + 造福至親或鄉里",
-            representative_stories: [
-              "印度曼吉鑿山開路",
-              "輪椅上的馬拉松父子（Team Hoyt）",
-              "無人島守護老爺爺",
-            ],
-            story_structure: {
-              setup: "殘酷的地理障礙或先天殘疾將親人困在痛苦與封閉之中。",
-              catalyst:
-                "主角拒絕向命運妥協，立下看似荒謬、耗時數十年的宏大改造誓言。",
-              climax:
-                "歷經數千個日夜的體能極限挑戰與外界冷嘲熱諷，始終未曾停下腳步。",
-              resolution:
-                "大山被鑿通、千場馬拉松抵達終點，以一人之執念鑄就人倫奇蹟。",
-            },
-          },
-          {
-            archetype_id: "ARCH-12",
-            archetype_name: "接納殘缺與群體賦能 (Embracing the Flawed)",
-            core_formula:
-              "天生異樣/缺陷主體 + 從被排斥到被深度接納 + 成為群體的精神光源",
-            representative_stories: [
-              "《奇蹟男孩》",
-              "《放牛班的春天》",
-              "《窗邊的小荳荳》",
-              "《絨毛兔的願望》",
-            ],
-            story_structure: {
-              setup: "主角因身體缺陷、神經多樣性或行為偏差，難以融入常規體系。",
-              catalyst:
-                "遇見具備深厚包容力的導師或家庭，其獨特性被看見而非被矯正。",
-              climax:
-                "主角在公開舞台或關鍵事件中展現了純真力量，震撼原本帶有偏見的群體。",
-              resolution:
-                "環境因接納弱者而變得溫柔，群體在學會愛的過程中獲得了自我救贖。",
-            },
-          },
-          {
-  "archetype_id": "ARCH-13",
-  "archetype_name": "靜默扎根與甘霖傳承 (Silent Endurance & Generational Legacy)",
-  "core_formula": "開局劣勢/屈辱誤解 + 不作辯解的極致克制與深扎 + 苦難沉澱為給下一代的希望羽翼",
-  "sample_stories": [
-    "《魔法種子》（仙人掌寓言）",
-    "《一碗陽春麵》（母親默默隱忍貧困，培育孩子長大成人）",
-    "《活著》（福貴歷經磨難，依然把生活信念交給孫子與老牛）",
-    "《當幸福來敲門》（父親在公廁過夜咬牙隱忍，只為給兒子構建光明的未來）",
-    "《地下的六千年》（種子在黑暗泥土中沉默蟄伏數年，最終開出覆蓋荒漠的花海）"
-  ],
-  "story_structure": {
-    "setup": "主角身處資源匱乏、惡劣封閉的環境，先天條件遠遜於同儕。",
-    "catalyst": "面臨外界的誤解、輕視或環境的無情擠壓，主角選擇不耗費精力辯解，而是將能量轉向深層扎根與自我克制（剪葉、蓄水、吞下委屈）。",
-    "climax": "全面性的危機或漫長的時間洗禮到來，浮華者凋零，唯有深扎的主角在沉默中迎來生命的盛放。",
-    "resolution": "主角將歷經苦難換來的養分與種子毫無保留地托付給下一代，目送他們越過荒漠、飛向充滿希望的新大陸。"
-  },
-  "emotional_mechanisms": [
-    "隱忍不發的克制美學（不抱怨、不爭辯的強大內心）",
-    "苦難被轉化為養分的崇高感（而非沉溺於受害者情緒）",
-    "代際薪火相傳的開拓希望（上一代的深扎，換來下一代的翱翔）"
-  ]
-}
+        "narrative_axes": {
+          "relationship": ["親子", "伴侶", "祖孫", "陌生人", "人與動物", "群體"],
+          "conflict": ["貧困", "離別", "誤解", "病痛", "偏見", "時間", "災難"],
+          "twist": ["信物揭露", "身份反轉", "善意回流", "承諾兌現", "角色互換"],
+          "ending": ["重逢", "和解", "傳承", "放下", "共同體接納", "新的儀式"]
+        },
+        "narrative_archetypes": [
+          {"archetype_id":"ARCH-01","archetype_name":"對稱代價與錯位深情 (Symmetric Sacrifice)","core_formula":"雙方各自傾其所有 + 陰錯陽差的禮物 + 愛的純粹度昇華","representative_stories":["《麥琪的禮物》","老夫妻互贈紀念物"],"story_structure":{"setup":"雙方皆困窘，卻想在重要日子送出最好的禮物。","catalyst":"兩人各自賣掉最珍視的物品，換取搭配對方寶物的禮物。","climax":"禮物揭曉，新禮物失去實用性。","resolution":"物質價值歸零，愛的順位卻被確認。"}},
+          {"archetype_id":"ARCH-02","archetype_name":"極限奉獻與耗盡自我 (Altruistic Self-Depletion)","core_formula":"無保留耗損 + 換取他者希望 + 精神永恆","representative_stories":["《快樂王子》","《最後一片葉子》","《夏綠蒂的網》"],"story_structure":{"setup":"受助者身陷絕境，無力逆轉。","catalyst":"奉獻者決定以自身珍貴資源介入。","climax":"最後關頭傾盡力量完成守護。","resolution":"奉獻者雖殘缺，受助者重獲生機。"}},
+          {"archetype_id":"ARCH-03","archetype_name":"終生守候與跨界忠誠 (Interspecies Devotion)","core_formula":"非功利信任 + 跨物種連結 + 超越時間的守望","representative_stories":["忠犬八公","《再見了，可魯》","獅子克里斯蒂安"],"story_structure":{"setup":"孤獨人類與動物建立日常默契。","catalyst":"疾病、離別或意外使人類永久缺席。","climax":"動物在約定地點持續等待。","resolution":"守候成為跨越物種的忠誠圖騰。"}},
+          {"archetype_id":"ARCH-04","archetype_name":"互為救贖與戒斷重生 (Mutual Salvation)","core_formula":"兩個破碎主體 + 偶然相遇 + 相互支撐脫離泥淖","representative_stories":["《街貓鮑伯》","《幸福綠皮書》","少年與治療馬"],"story_structure":{"setup":"主角受成癮、孤立或偏見所困。","catalyst":"另一個脆弱生命闖入生活。","climax":"主角為守護對方戰勝退縮誘惑。","resolution":"兩者重新找回尊嚴與連結。"}},
+          {"archetype_id":"ARCH-05","archetype_name":"殘酷世界裡的溫柔謊言 (Protective Illusion)","core_formula":"殘酷現實 + 守護者構築童真防護罩 + 守住微光","representative_stories":["《美麗人生》","為孩子圓英雄夢"],"story_structure":{"setup":"戰爭、病痛或災難逼近。","catalyst":"守護者把恐怖現實包裝成遊戲。","climax":"守護者獨自承擔真相與風險。","resolution":"孩子保有純真並帶著愛前行。"}},
+          {"archetype_id":"ARCH-06","archetype_name":"童真入侵與冰封融化 (Thawing the Cynic)","core_formula":"封閉者 + 純真闖入者 + 卸下防備","representative_stories":["《聖誕頌歌》","《天外奇蹟》","《綠山牆的安妮》"],"story_structure":{"setup":"主角因創傷封閉，與世界疏離。","catalyst":"好奇、坦率的生命進入其日常。","climax":"危機中，闖入者給出無條件關懷。","resolution":"主角重新獲得愛人的能力。"}},
+          {"archetype_id":"ARCH-07","archetype_name":"維護尊嚴的匿名隱蔽善意 (Dignified Stealth Kindness)","core_formula":"困窘 + 巧妙援助 + 留住體面","representative_stories":["《一碗陽春麵》","懸掛咖啡","洗碗抵餐費"],"story_structure":{"setup":"求助者在窘迫中尋求基本資源。","catalyst":"提供者敏銳察覺難處卻不張揚。","climax":"以勞務交換、匿名預付等方式給予協助。","resolution":"受助者的自尊成為繼續奮鬥的力量。"}},
+          {"archetype_id":"ARCH-08","archetype_name":"制度暫停與全城共謀善意 (Collective Humanity)","core_formula":"冰冷規則 + 個人先跨線 + 群體良知共振","representative_stories":["1914 聖誕節休戰","甘德鎮接納滯留客機","全班學手語"],"story_structure":{"setup":"制度或災難讓群體陷入困境。","catalyst":"少數人先做出善意選擇。","climax":"陌生人自發加入協作。","resolution":"現實短暫讓位給人性溫暖。"}},
+          {"archetype_id":"ARCH-09","archetype_name":"抵抗遺忘的日常儀式 (Rituals Against Decay)","core_formula":"衰老侵蝕 + 每日微小堅持 + 愛超越認知","representative_stories":["失憶老翁每日重新求婚","父親的餐巾紙留言","《可可夜總會》"],"story_structure":{"setup":"記憶或身體機能逐漸流失。","catalyst":"守候者建立固定的日常儀式。","climax":"熟悉旋律、氣味或動作喚回片刻認同。","resolution":"愛被證明是比記憶更深的本能。"}},
+          {"archetype_id":"ARCH-10","archetype_name":"超越時空的信物與延遲對話 (Intergenerational Echoes)","core_formula":"離世前安排 + 成長時解鎖 + 跨時空撫慰","representative_stories":["生日錄音帶","寫給未來的信","《解憂雜貨店》"],"story_structure":{"setup":"至親無法陪伴孩子未來的人生節點。","catalyst":"秘密留下信件、錄音或信物。","climax":"主角在挫折或成年時收到訊息。","resolution":"生死阻隔化為長久的精神支持。"}},
+          {"archetype_id":"ARCH-11","archetype_name":"愚公移山式的純粹執念 (Monumental Devotion)","core_formula":"不可撼動阻礙 + 長年死磕 + 為至親或鄉里開路","representative_stories":["曼吉鑿山開路","Team Hoyt"],"story_structure":{"setup":"障礙困住至親或整個社群。","catalyst":"主角立下看似不可能的誓言。","climax":"歷經漫長勞動與嘲笑仍未停下。","resolution":"一人執念終於改變眾人的路。"}},
+          {"archetype_id":"ARCH-12","archetype_name":"接納殘缺與群體賦能 (Embracing the Flawed)","core_formula":"被排斥的獨特性 + 被真正看見 + 群體改變","representative_stories":["《奇蹟男孩》","《窗邊的小荳荳》","《絨毛兔的願望》"],"story_structure":{"setup":"主角因差異難以融入常規體系。","catalyst":"導師、家庭或同伴選擇理解而非矯正。","climax":"主角在關鍵事件展現獨特力量。","resolution":"群體因學會接納而更溫柔。"}},
+          {"archetype_id":"ARCH-13","archetype_name":"靜默扎根與甘霖傳承 (Silent Endurance & Generational Legacy)","core_formula":"劣勢與誤解 + 不辯解的深扎 + 苦難化為下一代希望","representative_stories":["《當幸福來敲門》","仙人掌寓言","母親培育孩子"],"story_structure":{"setup":"主角資源匱乏且被低估。","catalyst":"面對擠壓時，主角將力氣用於沉默累積。","climax":"時間淘汰浮華，深扎者迎來盛放。","resolution":"主角把成果托付給下一代。"}},
+          {"archetype_id":"ARCH-14","archetype_name":"被誤解的守護 (Misunderstood Devotion)","core_formula":"冷漠表象 + 隱藏付出 + 證據揭露 + 遲來理解","representative_stories":["未寄出的信","匿名繳費單","默默修好的舊物"],"story_structure":{"setup":"主角將對方的拒絕或冷淡視為不在乎。","catalyst":"關係因誤會進一步疏離。","climax":"收據、影像或信物揭露對方長期守護。","resolution":"主角理解那份不擅表達的愛，主動和解。"}},
+          {"archetype_id":"ARCH-15","archetype_name":"善意接力與回流 (Kindness Ripple)","core_formula":"微小善意 + 陌生人接力 + 回到起點的溫暖回報","representative_stories":["付費前行咖啡","遺失錢包的接力","雨天共用雨傘"],"story_structure":{"setup":"一個人看見陌生人的小困難。","catalyst":"他做了幾乎不求回報的幫助。","climax":"受助者把善意傳給下一個人，形成連鎖。","resolution":"善意以意外形式回到最初施予者身上。"}},
+          {"archetype_id":"ARCH-16","archetype_name":"未竟願望的接棒 (Carried-Forward Wish)","core_formula":"離別留下心願 + 新主角接手 + 完成小事 + 愛被延續","representative_stories":["替祖父寄出的明信片","完成母親的花園","替朋友跑完最後一段路"],"story_structure":{"setup":"一段關係因離別留下未完成願望。","catalyst":"主角意外發現願望的線索。","climax":"主角克服抗拒或困難完成它。","resolution":"悲傷不再停滯，而成為新的行動與連結。"}},
+          {"archetype_id":"ARCH-17","archetype_name":"失而復得的暗號重逢 (Recognition Reunion)","core_formula":"失散或斷聯 + 專屬暗號 + 身分確認 + 關係回歸","representative_stories":["失散寵物","多年未見兄妹","舊樂曲重逢"],"story_structure":{"setup":"重要的人、動物或物件從主角生命消失。","catalyst":"多年後出現看似普通的線索。","climax":"只有彼此知道的習慣、旋律或動作證明身分。","resolution":"重逢讓原本空缺的生活重新完整。"}},
+          {"archetype_id":"ARCH-18","archetype_name":"被守護者的反轉成長 (The Protected Becomes Protector)","core_formula":"弱小被照顧 + 學會愛的方式 + 關鍵時刻反守護","representative_stories":["孩子照顧生病父親","小狗找到走失主人","學生鼓勵老師"],"story_structure":{"setup":"主角長期被更強大的人或生命保護。","catalyst":"主角從日常細節學會關心。","climax":"守護者陷入脆弱或危機，主角做出關鍵行動。","resolution":"關係從單向照顧變成平等互守。"}},
+          {"archetype_id":"ARCH-19","archetype_name":"陌生人成為家人 (Found Family)","core_formula":"無血緣的孤單者 + 共同日常或危機 + 留下一個位置","representative_stories":["除夕的一副空碗筷","鄰居照顧留學生","小店收留迷路孩子"],"story_structure":{"setup":"主角在陌生城市或家庭之外感到孤單。","catalyst":"因小事故、工作或日常與一群人相識。","climax":"主角原本要離開時，眾人用具體行動挽留。","resolution":"空著的位置被保留，陌生人正式成為家人。"}},
+          {"archetype_id":"ARCH-20","archetype_name":"帶著愛告別與重新前行 (Grief into Forward Motion)","core_formula":"不捨失去 + 紀念物束縛 + 允許告別 + 將愛化為前路","representative_stories":["放飛修好的風箏","送出舊圍巾","種下紀念樹"],"story_structure":{"setup":"主角緊抓遺物，無法面對失去。","catalyst":"某個日常場景讓主角看見自己停在原地。","climax":"主角做出象徵告別的選擇。","resolution":"不是遺忘，而是帶著被愛過的力量重新生活。"}},
+          {"archetype_id":"ARCH-21","archetype_name":"生命延續與心跳傳承 (Legacy Through Life-Giving)","core_formula":"一方生命終結 + 器官／血液延續他人生命 + 尋找與相認","representative_stories":["器官捐贈受贈者尋找家屬","聽見親人的心跳聲","骨髓捐贈配對重逢"],"story_structure":{"setup":"一個生命驟然殞落，家屬悲痛難以接受。","catalyst":"家屬選擇捐贈，讓部分生命以另一種形式延續。","climax":"受贈者與捐贈者家屬跨越時間找到彼此，或聽見那顆心臟仍在跳動。","resolution":"死亡不是終點，愛與生命以另一種方式延續下去。"}},
+          {"archetype_id":"ARCH-22","archetype_name":"命中注定的巧合緣分 (Fated Coincidence)","core_formula":"表面陌生的兩人 + 命運早已悄悄牽連 + 巧合揭曉","representative_stories":["多年前救命恩人再相遇卻不自知","同一件物品串起兩代人","素未謀面卻互相幫過彼此家人"],"story_structure":{"setup":"兩個看似毫無關聯的人各自過著平凡生活。","catalyst":"因日常小事再度相遇或產生交集，渾然不知彼此的淵源。","climax":"一個細節、物件或對話揭露兩人早已被命運牽連多年。","resolution":"巧合讓兩人明白，善意與緣分一直在暗中循環。"}},
+          {"archetype_id":"ARCH-23","archetype_name":"貴人提攜與翻身圓夢 (Sponsor & Breakthrough)","core_formula":"平凡人的潛力 + 陌生貴人給予機會 + 努力兌現夢想","representative_stories":["路邊攤主資助送報生念書","陌生顧客發掘街頭藝人","老闆願意賭一次給邊緣青年機會"],"story_structure":{"setup":"主角懷抱才華或夢想，卻困於資源匱乏或身分限制。","catalyst":"一位陌生人看見主角的潛力，主動給予一次機會。","climax":"主角把握機會，歷經努力克服現實考驗。","resolution":"主角靠自己的力量翻身圓夢，貴人在背後靜靜見證。"}},
+          {"archetype_id":"ARCH-24","archetype_name":"瞞著至親獨自撐住 (Reverse Protective Illusion)","core_formula":"長輩／至親隱瞞病痛 + 獨自硬撐 + 子女意外發現真相","representative_stories":["父母生病卻報喜不報憂","獨居長輩隱瞞跌倒住院","家人瞞著在外遊子病情惡化"],"story_structure":{"setup":"至親身體出狀況，卻不願讓在外打拼的家人擔心。","catalyst":"通話中永遠報平安，實則獨自承受病痛與孤單。","climax":"子女因某個契機（意外來電、鄰居告知、返鄉探視）發現真相。","resolution":"子女趕回身邊，兩代人重新學會坦誠面對彼此的脆弱。"}}
         ],
-        emotional_elements_breakdown: {
-          dimensions: [
-            {
-              element: "非對稱奉獻 (Asymmetric Sacrifice)",
-              frequency_weight: 0.16,
-              definition:
-                "付出者在不求回報甚至承擔不可逆損失的情況下，傾盡所有成全他人的幸福與生命。",
-              key_triggers: [
-                "以自身耗損為代價",
-                "生命最後時刻的託付",
-                "隱忍痛苦成全對方",
-              ],
-            },
-            {
-              element: "跨越隔閡 (Transcending Boundaries)",
-              frequency_weight: 0.14,
-              definition:
-                "打破物種、階級、種族、立場或生死等天然壁壘，建立純粹無功利的靈魂連結。",
-              key_triggers: [
-                "動物對人類毫無保留的依賴",
-                "敵對陣營在戰火中的短暫相擁",
-                "跨階級的忘年之交",
-              ],
-            },
-            {
-              element: "體面與尊嚴守護 (Dignity Preservation)",
-              frequency_weight: 0.12,
-              definition:
-                "在行善時極度克制施捨感，巧妙透過平等的交換或隱蔽的關懷，守住弱者最後的自尊。",
-              key_triggers: [
-                "暗中加料/免單而不張揚",
-                "以微小勞務換取餐食的體面",
-                "默契守護他人的窘迫秘密",
-              ],
-            },
-            {
-              element: "儀式感與時間長度 (Temporal Endurance)",
-              frequency_weight: 0.11,
-              definition:
-                "以「數十年如一日」的極致時間跨度，將微小的習慣與陪伴昇華為不可撼動的精神信仰。",
-              key_triggers: [
-                "每天定時定點的守候與問候",
-                "跨越半世紀的尋覓與重聚",
-                "一生只為一人種下一片花海",
-              ],
-            },
-            {
-              element: "溫柔假象與童真庇護 (The Protective Illusion)",
-              frequency_weight: 0.1,
-              definition:
-                "在無可挽回的沉重悲劇或殘酷現實中，以幽默與謊言為脆弱者搭建一座純真避風港。",
-              key_triggers: [
-                "把苦難包裝成一場好玩的闖關遊戲",
-                "用畫筆在牆上畫出永不凋謝的希望",
-                "全城合力為孩子圓一場英雄夢",
-              ],
-            },
-            {
-              element: "時空回響與遺留信物 (Sensory & Temporal Anchors)",
-              frequency_weight: 0.09,
-              definition:
-                "透過具有觸覺、聽覺或視覺記憶的實體物件，達成跨越生死與歲月隔閡的情感對話。",
-              key_triggers: [
-                "多年後才逐一拆開的成長預留信件",
-                "老舊錄音帶裡傳來逝去親人的呼吸與歌聲",
-                "帶著手溫的修補玩偶與泛黃照片",
-              ],
-            },
-            {
-              element: "集體善意與微光共振 (Communal Resonance)",
-              frequency_weight: 0.08,
-              definition:
-                "單一微小的善念打破現代社會的冷漠與防備，引發陌生人間連鎖的溫暖共謀。",
-              key_triggers: [
-                "暴風雪中整座小鎮為滯留異鄉客打開家門",
-                "全班為了一位聽障同學集體自學手語",
-                "制度短暫停擺只為等候最後一人",
-              ],
-            },
-            {
-              element: "雙向治癒與破碎互補 (Mutual Healing)",
-              frequency_weight: 0.07,
-              definition:
-                "兩個同樣被世界遺棄或身負創傷的殘缺主體，在彼此的笨拙照料中重新找到活下去的勇氣。",
-              key_triggers: [
-                "流浪街童與受傷小動物的相互依偎",
-                "失意邊緣人在承擔保護責任時戰勝心魔",
-                "從彼此的傷口中看見自我救贖",
-              ],
-            },
-            {
-              element: "接納殘缺與無條件包容 (Radical Acceptance)",
-              frequency_weight: 0.07,
-              definition:
-                "不試圖去「矯正」對方的缺陷或怪異，而是給予最深層的看見、理解與安全感。",
-              key_triggers: [
-                "耐心傾聽四個小時怪異言論的小學校長",
-                "擁抱自閉症孩童無法言說的情緒風暴",
-                "因被深深愛過而真正獲得靈魂的破舊玩具",
-              ],
-            },
-            {
-              element: "本能記憶與超越衰退 (Instinctive Love Beyond Decay)",
-              frequency_weight: 0.06,
-              definition:
-                "當理智、認知與生理機能被衰老或病痛徹底剝奪時，愛依然作為最底層的神經條件反射存留。",
-              key_triggers: [
-                "失智老人忘記一切卻仍緊緊護著給老伴的花",
-                "認不出兒女的母親本能地把好吃的留給孩子",
-                "在熟悉的琴聲與旋律響起時眼中瞬間重現神采",
-              ],
-            },
-          ],
-        },
+        "emotional_elements_breakdown": {
+          "dimensions": [
+            {"element":"非對稱奉獻 (Asymmetric Sacrifice)","frequency_weight":0.16,"definition":"不求回報地耗損自己，成全他人。","key_triggers":["不可逆代價","最後託付","隱忍成全"]},
+            {"element":"跨越隔閡 (Transcending Boundaries)","frequency_weight":0.14,"definition":"跨物種、階級、立場或生死建立連結。","key_triggers":["非功利信任","跨陣營相助","忘年之交"]},
+            {"element":"體面與尊嚴守護 (Dignity Preservation)","frequency_weight":0.12,"definition":"幫助他人時留住其自尊。","key_triggers":["匿名加料","平等交換","守護秘密"]},
+            {"element":"儀式感與時間長度 (Temporal Endurance)","frequency_weight":0.11,"definition":"長久重複的微小陪伴，累積成愛。","key_triggers":["每日守候","多年尋覓","固定問候"]},
+            {"element":"溫柔假象與童真庇護 (Protective Illusion)","frequency_weight":0.10,"definition":"以想像力守護脆弱者的心。","key_triggers":["苦難變遊戲","畫出希望","圓夢"]},
+            {"element":"時空回響與遺留信物 (Sensory & Temporal Anchors)","frequency_weight":0.09,"definition":"以物件、聲音與氣味跨越時間對話。","key_triggers":["預留信件","錄音帶","修補玩偶"]},
+            {"element":"集體善意與微光共振 (Communal Resonance)","frequency_weight":0.08,"definition":"一個善念引發陌生人共同參與。","key_triggers":["全城開門","集體學習","規則讓位"]},
+            {"element":"雙向治癒與破碎互補 (Mutual Healing)","frequency_weight":0.07,"definition":"破碎的雙方在照料中重獲勇氣。","key_triggers":["共同傷口","承擔責任","彼此照映"]},
+            {"element":"接納殘缺與無條件包容 (Radical Acceptance)","frequency_weight":0.07,"definition":"不矯正差異，而是看見與理解。","key_triggers":["耐心傾聽","安全感","獨特價值"]},
+            {"element":"本能記憶與超越衰退 (Instinctive Love Beyond Decay)","frequency_weight":0.06,"definition":"認知衰退時，愛仍作為本能留存。","key_triggers":["保留食物","熟悉旋律","緊握的花"]},
+            {"element":"遲來理解與真相揭露 (Late Understanding)","frequency_weight":0.05,"definition":"以具體證據翻轉誤解，讓觀眾與主角同時理解。","key_triggers":["收據","未寄出的信","監視器畫面"]},
+            {"element":"善意回流與希望延續 (Kindness Returned)","frequency_weight":0.05,"definition":"善意被接力或回到起點，形成正向閉環。","key_triggers":["傳遞幫助","意外回報","留下一個位置"]}
+          ]
+        }
       };
 
-      let activeData = JSON.parse(JSON.stringify(defaultData));
+      let activeData = structuredClone(defaultData);
+      let selectedAxes = {};
+      let currentGeneratedPrompt = "";
+      
+      const $ = (id) => document.getElementById(id);
+      const archetypeSelect = $("archetypeSelect");
+      const elementSelect = $("elementSelect");
+      const archetypeList = $("archetypeList");
+      const elementsContainer = $("elementsContainer");
+      const jsonEditor = $("jsonEditor");
+      const promptPreview = $("promptPreview");
+      const copyPromptBtn = $("copyPromptBtn");
+      const copyBtnText = $("copyBtnText");
+      const copyIcon = $("copyIcon");
+      const axisLabels = { relationship: "關係", conflict: "衝突", twist: "反轉", ending: "結局" };
 
-      const archetypeSelect = document.getElementById("archetypeSelect");
-      const elementSelect = document.getElementById("elementSelect");
-      const archetypeList = document.getElementById("archetypeList");
-      const elementsContainer = document.getElementById("elementsContainer");
-      const jsonEditor = document.getElementById("jsonEditor");
-      const archetypeCount = document.getElementById("archetypeCount");
+      function validateData(data) {
+        if (!data || typeof data !== "object" || Array.isArray(data)) throw new Error("根節點必須是 JSON 物件。");
+        if (!Array.isArray(data.narrative_archetypes)) throw new Error("缺少 narrative_archetypes 陣列。");
+        if (!data.emotional_elements_breakdown || !Array.isArray(data.emotional_elements_breakdown.dimensions)) throw new Error("缺少 emotional_elements_breakdown.dimensions 陣列。");
+        const defaultAxes = defaultData.narrative_axes;
+        data.narrative_axes = data.narrative_axes || structuredClone(defaultAxes);
+        ["relationship", "conflict", "twist", "ending"].forEach((axis) => {
+          if (!Array.isArray(data.narrative_axes[axis]) || data.narrative_axes[axis].length === 0) data.narrative_axes[axis] = structuredClone(defaultAxes[axis]);
+        });
+        data.narrative_archetypes.forEach((item, index) => {
+          if (!item.archetype_id || !item.archetype_name) throw new Error(`第 ${index + 1} 個原型必須包含 archetype_id 與 archetype_name。`);
+        });
+        data.dataset_summary = data.dataset_summary || {};
+        data.dataset_summary.archetypes_count = data.narrative_archetypes.length;
+        return data;
+      }
+
+      function makeOption(value, text) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = text;
+        return option;
+      }
 
       function renderUI() {
-        const archetypes = activeData.narrative_archetypes || [];
-        const dimensions =
-          activeData.emotional_elements_breakdown?.dimensions || [];
-
-        archetypeCount.textContent = archetypes.length;
+        const archetypes = activeData.narrative_archetypes;
+        const dimensions = activeData.emotional_elements_breakdown.dimensions;
+        selectedAxes = Object.fromEntries(Object.entries(activeData.narrative_axes).map(([key, values]) => [key, values[0]]));
+        $("archetypeCount").textContent = archetypes.length;
         jsonEditor.value = JSON.stringify(activeData, null, 2);
+        archetypeSelect.replaceChildren(...archetypes.map((item, index) => makeOption(index, `${item.archetype_id} — ${item.archetype_name}`)));
+        elementSelect.replaceChildren(...dimensions.map((item, index) => makeOption(index, `${item.element} (${Math.round(item.frequency_weight * 100)}%)`)));
 
-        // 原型下拉選單
-        archetypeSelect.innerHTML = "";
-        archetypes.forEach((item, index) => {
-          const opt = document.createElement("option");
-          opt.value = index;
-          opt.textContent = `${item.archetype_id} - ${item.archetype_name}`;
-          archetypeSelect.appendChild(opt);
-        });
+        archetypeList.replaceChildren(...archetypes.map((item) => {
+          const card = document.createElement("article");
+          card.className = "rounded-xl border border-slate-100 bg-slate-50/70 p-4 transition hover:border-indigo-200";
+          const title = document.createElement("h4"); title.className = "mb-2 text-sm font-bold"; title.textContent = `${item.archetype_id} ${item.archetype_name}`;
+          const formula = document.createElement("p"); formula.className = "mb-2 rounded bg-indigo-50/70 p-1.5 font-mono text-xs text-indigo-600"; formula.textContent = item.core_formula || "自訂核心公式";
+          const examples = document.createElement("p"); examples.className = "text-xs text-slate-500"; examples.textContent = `代表案例：${(item.representative_stories || []).join("、") || "經典範例收錄中"}`;
+          card.append(title, formula, examples); return card;
+        }));
 
-        // 感人元素下拉選單
-        elementSelect.innerHTML = "";
-        if (dimensions.length > 0) {
-          dimensions.forEach((item, index) => {
-            const opt = document.createElement("option");
-            opt.value = index;
-            opt.textContent = `${item.element} (${Math.round((item.frequency_weight || 0.2) * 100)}%)`;
-            elementSelect.appendChild(opt);
-          });
-        } else {
-          const opt = document.createElement("option");
-          opt.value = "";
-          opt.textContent = "通用溫馨共振 (Default)";
-          elementSelect.appendChild(opt);
-        }
+        elementsContainer.replaceChildren(...dimensions.map((dim) => {
+          const percentage = Math.round((Number(dim.frequency_weight) || 0) * 100);
+          const box = document.createElement("div"); box.className = "space-y-1";
+          const top = document.createElement("div"); top.className = "flex justify-between text-xs font-medium";
+          const label = document.createElement("span"); label.className = "text-slate-700"; label.textContent = dim.element;
+          const value = document.createElement("span"); value.className = "font-mono text-slate-400"; value.textContent = `${percentage}%`;
+          top.append(label, value);
+          const track = document.createElement("div"); track.className = "h-2 w-full rounded-full bg-slate-100";
+          const fill = document.createElement("div"); fill.className = "h-2 rounded-full bg-rose-500"; fill.style.width = `${Math.max(0, Math.min(100, percentage))}%`;
+          const description = document.createElement("p"); description.className = "text-[11px] text-slate-400"; description.textContent = dim.definition || "";
+          track.append(fill); box.append(top, track, description); return box;
+        }));
 
-        // 渲染原型卡片庫
-        archetypeList.innerHTML = "";
-        archetypes.forEach((item) => {
-          const card = document.createElement("div");
-          card.className =
-            "border border-slate-100 bg-slate-50/70 p-4 rounded-xl hover:border-indigo-200 transition";
-          const sampleList = (
-            item.representative_stories ||
-            item.sample_stories ||
-            []
-          ).join("、");
-          card.innerHTML = `
-          <div class="flex items-center justify-between mb-1">
-            <h4 class="font-bold text-slate-800 text-sm">${item.archetype_id} ${item.archetype_name}</h4>
-          </div>
-          <p class="text-xs font-mono text-indigo-600 bg-indigo-50/70 p-1.5 rounded mb-2">${item.core_formula || ""}</p>
-          <p class="text-xs text-slate-500"><strong>代表案例：</strong>${sampleList || "經典範例收錄中"}</p>
-        `;
-          archetypeList.appendChild(card);
-        });
-
-        // 渲染感人維度進度條
-        elementsContainer.innerHTML = "";
-        if (dimensions.length > 0) {
-          dimensions.forEach((dim) => {
-            const percentage = Math.round((dim.frequency_weight || 0.2) * 100);
-            const bar = document.createElement("div");
-            bar.className = "space-y-1";
-            bar.innerHTML = `
-            <div class="flex justify-between text-xs font-medium">
-              <span class="text-slate-700">${dim.element}</span>
-              <span class="text-slate-400 font-mono">${percentage}%</span>
-            </div>
-            <div class="w-full bg-slate-100 rounded-full h-2">
-              <div class="bg-rose-500 h-2 rounded-full" style="width: ${percentage}%"></div>
-            </div>
-            <p class="text-[11px] text-slate-400">${dim.definition || ""}</p>
-          `;
-            elementsContainer.appendChild(bar);
-          });
-        } else {
-          elementsContainer.innerHTML = `<p class="text-xs text-slate-400 italic">當前 JSON 未定義維度分佈。</p>`;
-        }
-
+        renderAxesUI();
         generateStoryOutline();
+      }
+
+      function renderAxesUI() {
+        $("axesContainer").replaceChildren(...Object.entries(activeData.narrative_axes).map(([key, values]) => {
+          const row = document.createElement("label"); row.className = "block text-xs";
+          const label = document.createElement("span"); label.className = "mb-1 block font-bold text-sky-700"; label.textContent = axisLabels[key] || key;
+          const select = document.createElement("select");
+          select.className = "w-full rounded-lg border border-sky-200 bg-sky-50/60 p-2 text-xs text-slate-700 outline-none focus:ring-2 focus:ring-sky-400";
+          select.dataset.axisKey = key;
+          select.replaceChildren(...values.map((value) => makeOption(value, value)));
+          select.value = selectedAxes[key] ?? values[0];
+          select.addEventListener("change", () => {
+            selectedAxes[key] = select.value;
+            generateStoryOutline();
+          });
+          row.append(label, select); return row;
+        }));
+      }
+
+      function stage(label, text) {
+        const line = document.createElement("p");
+        const strong = document.createElement("strong"); strong.className = "text-amber-800"; strong.textContent = label;
+        line.append(strong, text); return line;
+      }
+
+      function buildAiPrompt(arch, element, axes, stages) {
+        const triggers = (element?.key_triggers || []).join("、");
+        return `請根據以下【敘事套路規格】與【敘事組合軸】，為我創作一篇約 45 秒短影音／精簡短篇動畫故事劇本（或溫馨敘事故事）。
+
+【敘事原型】${arch.archetype_id} — ${arch.archetype_name}
+【核心公式】${arch.core_formula || "無"}
+【核心感人元素】${element?.element || "無"}（定義：${element?.definition || ""}；關鍵觸發點：${triggers || "真摯情感"}）
+
+【敘事組合軸設定】
+• 人物關係：${axes.relationship}
+• 核心衝突：${axes.conflict}
+• 情節反轉：${axes.twist}
+• 故事結局：${axes.ending}
+
+【四段式情節結構參考】
+1. 起點（缺憾構建）：${stages.setup}
+2. 契機（微光介入）：${stages.catalyst}
+3. 高潮（代價與考驗）：${stages.climax}
+4. 餘韻（情感共振）：${stages.resolution}
+
+【創作要求】
+1. 聚焦畫面感與情感細節，以具體動作、物件或細微表情呈現心理變化。
+2. 節奏明快，高潮處的情感反轉需具備強烈的動人力量。
+3. 輸出包含：【故事標題】、【角色設定】、【分段劇本（含畫面描述與旁白／對白）】、【一句話情緒餘韻】。`;
       }
 
       function generateStoryOutline() {
-        const archetypes = activeData.narrative_archetypes || [];
-        const dimensions =
-          activeData.emotional_elements_breakdown?.dimensions || [];
-
-        const archIdx = archetypeSelect.value;
-        const elemIdx = elementSelect.value;
-
-        if (archetypes.length === 0 || archIdx === "") {
-          document.getElementById("storyTitle").textContent = "無可用故事原型";
-          document.getElementById("storyFormula").textContent = "";
-          document.getElementById("storyStages").innerHTML = "";
-          return;
-        }
-
-        const arch = archetypes[archIdx];
-        const elem =
-          dimensions.length > 0 && elemIdx !== ""
-            ? dimensions[elemIdx]
-            : { element: "溫暖善意" };
-
-        document.getElementById("storyTitle").textContent =
-          `《${arch.archetype_name}》×「${elem.element}」核心故事骨幹`;
-        document.getElementById("storyFormula").textContent =
-          `公式：${arch.core_formula || "自訂核心公式"}`;
-
-        const struct = arch.story_structure || {
-          setup: "主角身處特定困境或日常冷寂狀態中。",
-          catalyst: `引入關鍵契機，並藉由【${elem.element}】建立深刻情感連結。`,
-          climax: "面臨現實代價考驗或生死時間限制，善意迎來極致爆發。",
-          resolution: "完成精神昇華，留下溫暖持久的情感餘韻。",
+        const arch = activeData.narrative_archetypes[Number(archetypeSelect.value) || 0];
+        const element = activeData.emotional_elements_breakdown.dimensions[Number(elementSelect.value) || 0];
+        const axes = activeData.narrative_axes;
+        if (!selectedAxes.relationship) selectedAxes = Object.fromEntries(Object.entries(axes).map(([key, values]) => [key, values[0]]));
+        if (!arch) return;
+        
+        $("storyTitle").textContent = `《${arch.archetype_name}》×「${element?.element || "溫暖善意"}」核心故事骨幹`;
+        $("storyFormula").textContent = `公式：${arch.core_formula || "自訂核心公式"}`;
+        $("storyAxes").textContent = `組合軸：關係／${selectedAxes.relationship}　衝突／${selectedAxes.conflict}　反轉／${selectedAxes.twist}　結局／${selectedAxes.ending}`;
+        
+        const s = arch.story_structure || {};
+        const stageData = {
+          setup: s.setup || "主角身處困境或日常冷寂狀態中。",
+          catalyst: s.catalyst || `引入契機，融入「${element?.element || "溫暖善意"}」。`,
+          climax: s.climax || "善意在現實代價與時間限制中迎來考驗。",
+          resolution: s.resolution || "留下溫暖而持久的情感餘韻。"
         };
 
-        document.getElementById("storyStages").innerHTML = `
-        <p><strong class="text-amber-800">1. 起點（缺憾構建）：</strong>${struct.setup}</p>
-        <p><strong class="text-amber-800">2. 契機（微光介入）：</strong>${struct.catalyst.replace(/融入【.+】機制/, `融入【${elem.element}】機制`)}</p>
-        <p><strong class="text-amber-800">3. 高潮（代價與考驗）：</strong>${struct.climax}</p>
-        <p><strong class="text-amber-800">4. 餘韻（情感共振）：</strong>${struct.resolution}</p>
-      `;
+        $("storyStages").replaceChildren(
+          stage("1. 起點（缺憾構建）：", stageData.setup),
+          stage("2. 契機（微光介入）：", stageData.catalyst),
+          stage("3. 高潮（代價與考驗）：", stageData.climax),
+          stage("4. 餘韻（情感共振）：", stageData.resolution)
+        );
+
+        // 生成 AI Prompt 並更新預覽框
+        currentGeneratedPrompt = buildAiPrompt(arch, element, selectedAxes, stageData);
+        promptPreview.value = currentGeneratedPrompt;
       }
 
-      // 事件監聽
+      // 複製 AI Prompt 功能
+      async function copyPrompt() {
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(currentGeneratedPrompt);
+          } else {
+            promptPreview.select();
+            document.execCommand("copy");
+          }
+          copyBtnText.textContent = "已複製！可貼給 AI";
+          copyIcon.textContent = "✅";
+          copyPromptBtn.classList.remove("bg-amber-600", "hover:bg-amber-700");
+          copyPromptBtn.classList.add("bg-emerald-600", "hover:bg-emerald-700");
+          
+          setTimeout(() => {
+            copyBtnText.textContent = "一鍵複製 AI Prompt";
+            copyIcon.textContent = "📋";
+            copyPromptBtn.classList.remove("bg-emerald-600", "hover:bg-emerald-700");
+            copyPromptBtn.classList.add("bg-amber-600", "hover:bg-amber-700");
+          }, 2000);
+        } catch (err) {
+          promptPreview.select();
+          alert("複製失敗，請手動反白下方文字框並複製。");
+        }
+      }
+
+      copyPromptBtn.addEventListener("click", copyPrompt);
       archetypeSelect.addEventListener("change", generateStoryOutline);
       elementSelect.addEventListener("change", generateStoryOutline);
-
-      document.getElementById("randomGenBtn").addEventListener("click", () => {
-        const archetypes = activeData.narrative_archetypes || [];
-        const dimensions =
-          activeData.emotional_elements_breakdown?.dimensions || [];
-        if (archetypes.length === 0) return;
-
-        archetypeSelect.value = Math.floor(Math.random() * archetypes.length);
-        if (dimensions.length > 0) {
-          elementSelect.value = Math.floor(Math.random() * dimensions.length);
-        }
+      
+      $("randomGenBtn").addEventListener("click", () => {
+        archetypeSelect.value = Math.floor(Math.random() * activeData.narrative_archetypes.length);
+        elementSelect.value = Math.floor(Math.random() * activeData.emotional_elements_breakdown.dimensions.length);
+        const axes = activeData.narrative_axes;
+        const pick = (list) => list[Math.floor(Math.random() * list.length)];
+        selectedAxes = { relationship: pick(axes.relationship), conflict: pick(axes.conflict), twist: pick(axes.twist), ending: pick(axes.ending) };
+        renderAxesUI();
         generateStoryOutline();
       });
 
-      document.getElementById("applyJsonBtn").addEventListener("click", () => {
-        try {
-          const parsed = JSON.parse(jsonEditor.value);
-          activeData = parsed;
-          renderUI();
-        } catch (err) {
-          alert("JSON 格式解析錯誤：" + err.message);
-        }
+      $("applyJsonBtn").addEventListener("click", () => {
+        try { activeData = validateData(JSON.parse(jsonEditor.value)); renderUI(); }
+        catch (error) { alert(`JSON 格式或資料結構錯誤：${error.message}`); }
       });
 
-      document.getElementById("resetBtn").addEventListener("click", () => {
-        activeData = JSON.parse(JSON.stringify(defaultData));
-        renderUI();
-      });
+      $("resetBtn").addEventListener("click", () => { activeData = structuredClone(defaultData); renderUI(); });
 
-      document.getElementById("fileInput").addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+      $("fileInput").addEventListener("change", (event) => {
+        const file = event.target.files[0]; if (!file) return;
         const reader = new FileReader();
-        reader.onload = (event) => {
-          try {
-            activeData = JSON.parse(event.target.result);
-            renderUI();
-          } catch (err) {
-            alert("無法解析檔案內容為有效 JSON！");
-          }
-        };
-        reader.readAsText(file);
+        reader.onload = () => { try { activeData = validateData(JSON.parse(reader.result)); renderUI(); } catch (error) { alert(`無法匯入 JSON：${error.message}`); } };
+        reader.readAsText(file, "utf-8"); event.target.value = "";
       });
 
-      // 啟動渲染
       renderUI();
     </script>
   </body>
