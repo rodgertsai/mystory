@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- 確保手機裝置能正確縮放 -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>動態視覺故事矩陣 (手機適用版)</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      :root {
+        --primary: #2563eb;
+        --primary-hover: #1d4ed8;
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 15px;
+        line-height: 1.6;
+        -webkit-text-size-adjust: 100%; /* 防止手機旋轉時字體放大 */
+      }
+      h1 {
+        text-align: center;
+        color: var(--text-main);
+        font-size: 1.5rem;
+        margin-bottom: 25px;
+      }
+      .controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 25px;
+      }
+      /* 按鈕與選單觸控優化 */
+      select,
+      button {
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 16px; /* 16px 能防止 iOS Safari 點擊時自動 Zoom-in */
+        font-family: inherit;
+        height: 48px; /* 增加觸控高度 */
+      }
+      select {
+        border: 1px solid #cbd5e1;
+        background-color: white;
+        cursor: pointer;
+        outline: none;
+        color: var(--text-main);
+        appearance: auto;
+      }
+      button {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-weight: 600;
+      }
+      button:hover {
+        background-color: var(--primary-hover);
+      }
+      button.secondary {
+        background-color: #475569;
+      }
+      button.secondary:hover {
+        background-color: #334155;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+      .card {
+        background-color: var(--card-bg);
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-top: 4px solid var(--primary);
+      }
+      .card h3 {
+        margin-top: 0;
+        color: var(--primary);
+        font-size: 1.1em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .card p {
+        margin: 8px 0;
+        font-size: 0.95em;
+      }
+      .tag {
+        background: #e2e8f0;
+        color: #475569;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.8em;
+        font-weight: normal;
+      }
+      .prompt-container {
+        background-color: var(--text-main);
+        color: #f8fafc;
+        padding: 20px;
+        border-radius: 12px;
+        position: relative;
+      }
+      .prompt-container h3 {
+        margin-top: 0;
+        color: #93c5fd;
+        font-size: 1.1em;
+      }
+      #prompt-output {
+        white-space: pre-wrap;
+        word-wrap: break-word; /* 避免長文字撐破手機版面 */
+        font-family: monospace;
+        font-size: 14px;
+        max-height: 45vh; /* 手機上限制高度，避免滑動困難 */
+        overflow-y: auto;
+        padding-right: 10px;
+        line-height: 1.5;
+      }
+      /* 自訂捲軸樣式 */
+      #prompt-output::-webkit-scrollbar {
+        width: 6px;
+      }
+      #prompt-output::-webkit-scrollbar-track {
+        background: #334155;
+        border-radius: 4px;
+      }
+      #prompt-output::-webkit-scrollbar-thumb {
+        background: #94a3b8;
+        border-radius: 4px;
+      }
+      #toast {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #10b981;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 24px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+        z-index: 999;
+        font-weight: bold;
+      }
+      .hidden {
+        display: none !important;
+      }
+
+      /* 手機版面專屬設定 */
+      @media (max-width: 600px) {
+        .controls {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .controls button,
+        .controls select {
+          width: 100%;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🎬 動態視覺故事產生器</h1>
+
+    <div class="controls">
+      <button onclick="generateStory()">🎲 隨機抽取設定</button>
+
+      <select id="prompt-mode" onchange="toggleMode()">
+        <option value="script">🎬 產生單集腳本提示詞</option>
+        <option value="logline">📝 批次產生 Logline 大綱</option>
+      </select>
+
+      <select id="logline-qty" class="hidden" onchange="generateStory()">
+        <option value="1">產生 1 則</option>
+        <option value="3">產生 3 則</option>
+        <option value="5">產生 5 則</option>
+        <option value="10">產生 10 則</option>
+        <option value="20">產生 20 則</option>
+        <option value="30">產生 30 則</option>
+      </select>
+
+      <button class="secondary" onclick="copyPrompt()">
+        📋 一鍵複製提示詞
+      </button>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>情感與套路 <span class="tag" id="theme-id">-</span></h3>
+        <p>
+          <strong>核心命題：</strong><br /><span id="theme-text"
+            >請點擊上方按鈕生成</span
+          >
+        </p>
+        <p><strong>故事套路：</strong><br /><span id="theme-trope">-</span></p>
+      </div>
+      <div class="card">
+        <h3>主角與視覺 <span class="tag" id="char-id">-</span></h3>
+        <p><strong>主角設定：</strong><br /><span id="char-text">-</span></p>
+        <p>
+          <strong>視覺象徵物：</strong><br /><span id="char-anchor">-</span>
+        </p>
+      </div>
+      <div class="card">
+        <h3>事件與結局 <span class="tag" id="event-id">-</span></h3>
+        <p>
+          <strong>觸發事件：</strong><br /><span id="event-catalyst">-</span>
+        </p>
+        <p><strong>關鍵行動：</strong><br /><span id="event-action">-</span></p>
+        <p><strong>結局意象：</strong><br /><span id="event-image">-</span></p>
+      </div>
+    </div>
+
+    <div class="prompt-container">
+      <h3>🤖 給 AI 的組合提示詞 (Prompt)</h3>
+      <div id="prompt-output">準備就緒，等待生成...</div>
+    </div>
+
+    <div id="toast">✅ 已複製到剪貼簿！</div>
+
+    <script>
+      const storyMatrix = {
+        themes: [
+          {
+            id: "S1",
+            text: "不完美也有其專屬的價值",
+            trope: "被遺棄者的互相拯救 / 廢物利用的奇蹟",
+          },
+          {
+            id: "S2",
+            text: "離別不代表關係真正的消失",
+            trope: "等待一個不會回來的人 / 傳承與放手",
+          },
+          {
+            id: "S3",
+            text: "一個微小的善意能引發連鎖反應",
+            trope: "秘密朋友 / 錯誤的敵人變成盟友",
+          },
+          {
+            id: "S4",
+            text: "真正的勇敢是帶著恐懼前進",
+            trope: "完成陌生人的遺願 / 最後一天的冒險",
+          },
+          {
+            id: "S5",
+            text: "被記住，就是一種永恆的存在",
+            trope: "尋找失物其實是尋找記憶 / 跨越時間的承諾",
+          },
+        ],
+        characters: [
+          {
+            id: "V1",
+            text: "覺得自己毫無用處的舊報廢機器",
+            anchor: "一顆微微發光的生鏽齒輪",
+          },
+          {
+            id: "V2",
+            text: "剛來到新環境、防衛心重的帶刺生物",
+            anchor: "一把破了一半的雨傘",
+          },
+          {
+            id: "V3",
+            text: "總是負責照顧別人，卻忘了自己的長者",
+            anchor: "一封墨水暈開的舊信件",
+          },
+          {
+            id: "V4",
+            text: "擁有強大力量卻害怕傷害別人的巨獸",
+            anchor: "一株剛發芽的脆弱幼苗",
+          },
+          {
+            id: "V5",
+            text: "試圖融入群體，卻總是格格不入的異類",
+            anchor: "一條顏色鮮豔但勾破的毛線圍巾",
+          },
+        ],
+        events: [
+          {
+            id: "A1",
+            catalyst: "撿到不屬於自己的東西，卻找不到失主",
+            action: "放棄佔有，將物品留在高處。",
+            image: "陽光照在該物品上，背景有腳步聲靠近。",
+          },
+          {
+            id: "A2",
+            catalyst: "系統/環境突變（如：大雨、停電、斷線）",
+            action: "在黑暗中主動分享僅有的資源。",
+            image: "一盞微弱的光源亮起，照亮兩個靠在一起的剪影。",
+          },
+          {
+            id: "A3",
+            catalyst: "發現一個即將消逝/毀壞的生命",
+            action: "用自己最笨拙的方式為對方擋風遮雨。",
+            image: "主角滿身傷痕，但懷裡的生命開出了一朵花。",
+          },
+          {
+            id: "A4",
+            catalyst: "遇到一個與自己性格完全相反的干擾者",
+            action: "選擇放下防備，把手伸向對方。",
+            image: "兩個差異極大的手印/足跡並排印在泥土上。",
+          },
+          {
+            id: "A5",
+            catalyst: "原本的隱藏空間/安全區被意外打破",
+            action: "走出舒適圈，踏入未知的領域。",
+            image: "舊的門被關上，主角的背影融入寬廣的遠方。",
+          },
+        ],
+      };
+
+      let currentStories = [];
+
+      function getRandomItem(array) {
+        return array[Math.floor(Math.random() * array.length)];
+      }
+
+      function toggleMode() {
+        const mode = document.getElementById("prompt-mode").value;
+        const qtySelect = document.getElementById("logline-qty");
+
+        if (mode === "logline") {
+          qtySelect.classList.remove("hidden");
+        } else {
+          qtySelect.classList.add("hidden");
+        }
+
+        // 切換模式後自動重抽
+        generateStory();
+      }
+
+      function generateStory() {
+        const mode = document.getElementById("prompt-mode").value;
+        const qty =
+          mode === "logline"
+            ? parseInt(document.getElementById("logline-qty").value)
+            : 1;
+
+        currentStories = [];
+        for (let i = 0; i < qty; i++) {
+          currentStories.push({
+            theme: getRandomItem(storyMatrix.themes),
+            character: getRandomItem(storyMatrix.characters),
+            event: getRandomItem(storyMatrix.events),
+          });
+        }
+
+        // 卡片區永遠只顯示第一組抽出的結果
+        const firstStory = currentStories[0];
+        document.getElementById("theme-id").textContent = firstStory.theme.id;
+        document.getElementById("theme-text").textContent =
+          firstStory.theme.text;
+        document.getElementById("theme-trope").textContent =
+          firstStory.theme.trope;
+
+        document.getElementById("char-id").textContent =
+          firstStory.character.id;
+        document.getElementById("char-text").textContent =
+          firstStory.character.text;
+        document.getElementById("char-anchor").textContent =
+          firstStory.character.anchor;
+
+        document.getElementById("event-id").textContent = firstStory.event.id;
+        document.getElementById("event-catalyst").textContent =
+          firstStory.event.catalyst;
+        document.getElementById("event-action").textContent =
+          firstStory.event.action;
+        document.getElementById("event-image").textContent =
+          firstStory.event.image;
+
+        updatePrompt();
+      }
+
+      function updatePrompt() {
+        if (currentStories.length === 0) return;
+
+        const mode = document.getElementById("prompt-mode").value;
+        let promptTemplate = "";
+
+        if (mode === "script") {
+          const { theme, character, event } = currentStories[0];
+          promptTemplate = `請根據以下模組化設定，幫我寫一個 45 秒的無對白微動畫腳本雛形：
+
+【故事骨架】
+- 核心命題：${theme.text}
+- 故事套路：${theme.trope}
+
+【視覺與角色】
+- 主角狀態：${character.text}
+- 貫穿全片的視覺象徵物：${character.anchor}（請在片頭與片尾都安排這個物件的特寫）
+
+【劇情推進】
+- 觸發事件：${event.catalyst}
+- 主角關鍵行動：${event.action}
+- 結尾定格畫面：${event.image}
+
+要求：
+1. 聚焦於動作與視覺，避免內心獨白的描述。
+2. 敘事節奏要快，只需要 3 到 4 個主要場景轉場。
+3. 確保結尾定格畫面精準對應上述要求。`;
+        } else if (mode === "logline") {
+          promptTemplate = `請根據以下 ${currentStories.length} 組設定，幫我分別寫出精煉且具吸引力的「一句話故事大綱 (Logline)」：
+
+寫作要求：
+1. 每則嚴格限制在 1 到 2 句話以內完成。
+2. 句型結構請參考：「當 [觸發事件] 發生時，[主角] 選擇 [關鍵行動]，進而發現 [核心命題]。」
+3. 請巧妙地將 [視覺象徵] 融入對應的句子中，增加畫面的具體感，不要流於純粹的說教。
+
+`;
+          currentStories.forEach((story, index) => {
+            promptTemplate += `【組合 ${index + 1}】\n`;
+            promptTemplate += `- 主角缺陷：${story.character.text}\n`;
+            promptTemplate += `- 觸發事件：${story.event.catalyst}\n`;
+            promptTemplate += `- 關鍵行動：${story.event.action}\n`;
+            promptTemplate += `- 核心命題：${story.theme.text}\n`;
+            promptTemplate += `- 視覺象徵：${story.character.anchor}\n\n`;
+          });
+        }
+
+        document.getElementById("prompt-output").textContent = promptTemplate;
+      }
+
+      function copyPrompt() {
+        const promptText = document.getElementById("prompt-output").textContent;
+        if (promptText.includes("等待生成")) return;
+
+        navigator.clipboard.writeText(promptText).then(() => {
+          const toast = document.getElementById("toast");
+          toast.style.opacity = "1";
+          setTimeout(() => {
+            toast.style.opacity = "0";
+          }, 2000);
+        });
+      }
+
+      window.onload = generateStory;
+    </script>
+  </body>
+</html>
