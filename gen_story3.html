@@ -1,0 +1,1208 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#111827" />
+    <title>Story DNA Generator — 45秒動畫</title>
+    <style>
+      :root {
+        --bg: #f4f6f8;
+        --panel: #fff;
+        --text: #18202a;
+        --muted: #687383;
+        --line: #e2e6eb;
+        --accent: #5b5bd6;
+        --accent2: #7c3aed;
+        --good: #14804a;
+        --warn: #b26a00;
+        --danger: #b42318;
+        --shadow: 0 8px 28px rgba(20, 30, 50, 0.07);
+        --radius: 16px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          "Noto Sans TC",
+          sans-serif;
+      }
+      button,
+      select,
+      input {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      .app {
+        max-width: 1450px;
+        margin: auto;
+        padding: 20px;
+      }
+      header {
+        background: linear-gradient(135deg, #171b2d, #30365f);
+        color: white;
+        border-radius: 22px;
+        padding: 26px 28px;
+        box-shadow: var(--shadow);
+      }
+      header h1 {
+        margin: 0 0 7px;
+        font-size: clamp(25px, 4vw, 38px);
+      }
+      header p {
+        margin: 0;
+        color: #d9ddf0;
+      }
+      .workflow {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+      }
+      .step {
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        font-size: 13px;
+      }
+      .step.active {
+        background: white;
+        color: #292d55;
+        font-weight: 700;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        margin-top: 18px;
+        padding: 20px;
+      }
+      .panel h2 {
+        font-size: 18px;
+        margin: 0 0 16px;
+      }
+      .controls {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .field label {
+        display: block;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 7px;
+      }
+      select {
+        width: 100%;
+        border: 1px solid #ccd2da;
+        background: white;
+        border-radius: 10px;
+        padding: 10px 11px;
+        color: var(--text);
+      }
+      .toggles {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 15px;
+      }
+      .toggle {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 9px 11px;
+        font-size: 13px;
+        background: #fafbfc;
+      }
+      .toggle input {
+        accent-color: var(--accent);
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 17px;
+      }
+      .btn {
+        border: 0;
+        border-radius: 11px;
+        padding: 11px 16px;
+        font-weight: 700;
+        transition: 0.15s;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      .primary {
+        background: var(--accent);
+        color: white;
+      }
+      .secondary {
+        background: #eef0ff;
+        color: #3939a3;
+      }
+      .ghost {
+        background: white;
+        border: 1px solid var(--line);
+        color: var(--text);
+      }
+      .danger {
+        background: #fff0ef;
+        color: var(--danger);
+      }
+      .btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .status {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .statusText {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .stats {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .stat {
+        border: 1px solid var(--line);
+        background: #fafbfc;
+        border-radius: 10px;
+        padding: 8px 11px;
+        font-size: 13px;
+      }
+      .stat strong {
+        font-size: 16px;
+      }
+
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+      }
+      .toolbar .filters {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .filter {
+        padding: 7px 10px;
+        border: 1px solid var(--line);
+        background: white;
+        border-radius: 9px;
+        font-size: 12px;
+      }
+      .filter.active {
+        background: #eef0ff;
+        border-color: #b9bbff;
+        color: #3939a3;
+        font-weight: 700;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .card {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 17px;
+        box-shadow: 0 4px 16px rgba(20, 30, 50, 0.04);
+        position: relative;
+      }
+      .card.top {
+        border: 2px solid #7775df;
+        box-shadow: 0 8px 24px rgba(91, 91, 214, 0.12);
+      }
+      .rank {
+        position: absolute;
+        right: 14px;
+        top: 14px;
+        background: #f0f1f5;
+        border-radius: 9px;
+        padding: 5px 8px;
+        font-weight: 800;
+        font-size: 12px;
+      }
+      .top .rank {
+        background: #e9e8ff;
+        color: #3c3c9e;
+      }
+      .card h3 {
+        margin: 0 65px 10px 0;
+        font-size: 17px;
+      }
+      .badges {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 13px;
+      }
+      .badge {
+        font-size: 11px;
+        padding: 4px 7px;
+        border-radius: 999px;
+        background: #f1f3f6;
+        color: #4e5866;
+      }
+      .badge.good {
+        background: #e8f7ef;
+        color: var(--good);
+      }
+      .badge.warn {
+        background: #fff3df;
+        color: var(--warn);
+      }
+      .dna-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+      }
+      .dna-item {
+        background: #f8f9fb;
+        border-radius: 10px;
+        padding: 9px;
+      }
+      .dna-item .k {
+        font-size: 10px;
+        color: var(--muted);
+        font-weight: 800;
+        margin-bottom: 3px;
+      }
+      .dna-item .v {
+        font-size: 13px;
+        line-height: 1.4;
+      }
+      .scores {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 7px;
+        margin-top: 12px;
+      }
+      .score {
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        padding: 7px;
+        text-align: center;
+      }
+      .score small {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+      }
+      .score b {
+        font-size: 15px;
+      }
+      .card-actions {
+        display: flex;
+        gap: 7px;
+        flex-wrap: wrap;
+        margin-top: 13px;
+      }
+      .card-actions .btn {
+        padding: 8px 10px;
+        font-size: 12px;
+      }
+
+      .empty {
+        padding: 45px 15px;
+        text-align: center;
+        color: var(--muted);
+      }
+      .favorite {
+        background: #fff9e7 !important;
+        border-color: #f0ca62 !important;
+      }
+      .logline {
+        margin-top: 12px;
+        background: #f4f3ff;
+        border-left: 4px solid var(--accent);
+        padding: 12px;
+        border-radius: 9px;
+        font-size: 14px;
+        line-height: 1.65;
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 15, 30, 0.58);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        z-index: 20;
+      }
+      .modal.show {
+        display: flex;
+      }
+      .modal-box {
+        background: white;
+        width: min(720px, 100%);
+        max-height: 90vh;
+        overflow: auto;
+        border-radius: 18px;
+        padding: 22px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      }
+      .modal-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+      }
+      .modal-head h2 {
+        margin: 0;
+        font-size: 20px;
+      }
+      .close {
+        border: 0;
+        background: #f1f2f5;
+        border-radius: 9px;
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+      }
+      textarea {
+        width: 100%;
+        min-height: 150px;
+        resize: vertical;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 12px;
+        line-height: 1.6;
+        margin-top: 13px;
+      }
+      .note {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      footer {
+        padding: 25px 4px 80px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .sticky-mobile {
+        display: none;
+      }
+
+      @media (max-width: 1050px) {
+        .controls {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (max-width: 760px) {
+        .app {
+          padding: 10px;
+        }
+        header {
+          border-radius: 16px;
+          padding: 20px 17px;
+        }
+        .panel {
+          padding: 15px;
+          border-radius: 14px;
+        }
+        .controls {
+          grid-template-columns: 1fr;
+        }
+        .cards {
+          grid-template-columns: 1fr;
+        }
+        .dna-grid {
+          grid-template-columns: 1fr;
+        }
+        .scores {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .btn {
+          padding: 12px 14px;
+        }
+        .sticky-mobile {
+          display: flex;
+          position: fixed;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 15;
+          background: rgba(255, 255, 255, 0.94);
+          backdrop-filter: blur(12px);
+          border-top: 1px solid var(--line);
+          padding: 9px max(10px, env(safe-area-inset-left))
+            calc(9px + env(safe-area-inset-bottom));
+          gap: 8px;
+        }
+        .sticky-mobile .btn {
+          flex: 1;
+        }
+        .desktop-generate {
+          display: none;
+        }
+      }
+      @media (max-width: 420px) {
+        .scores {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <h1>🧬 Story DNA Generator</h1>
+        <p>45 秒動畫的「靈感發動機」：先大量發散，再挑出值得發展的故事 DNA。</p>
+        <div class="workflow">
+          <span class="step active">① Story DNA</span>
+          <span class="step">② 30–50 Candidates</span>
+          <span class="step">③ Anti-Cliché Judge</span>
+          <span class="step">④ Top 10</span>
+          <span class="step">⑤ Logline</span>
+        </div>
+      </header>
+
+      <section class="panel">
+        <h2>⚙️ Story DNA 設定</h2>
+        <div class="controls">
+          <div class="field">
+            <label>核心情感</label
+            ><select id="emotion"></select>
+          </div>
+          <div class="field">
+            <label>故事風格</label
+            ><select id="style"></select>
+          </div>
+          <div class="field">
+            <label>主角類型</label
+            ><select id="character"></select>
+          </div>
+          <div class="field">
+            <label>世界規則</label
+            ><select id="world"></select>
+          </div>
+          <div class="field">
+            <label>視覺符號</label
+            ><select id="symbol"></select>
+          </div>
+          <div class="field">
+            <label>候選數量</label>
+            <select id="count">
+              <option value="30">30</option>
+              <option value="40" selected>40</option>
+              <option value="50">50</option>
+            </select>
+          </div>
+        </div>
+        <div class="toggles">
+          <label class="toggle"
+            ><input id="anti" type="checkbox" checked /> 🚫 Anti-Cliché</label
+          >
+          <label class="toggle"
+            ><input id="visual" type="checkbox" checked /> 👁
+            Visual-first</label
+          >
+          <label class="toggle"
+            ><input id="strict" type="checkbox" checked /> ⏱ Strict 45
+            sec</label
+          >
+        </div>
+        <div class="actions desktop-generate">
+          <button class="btn primary" id="generateBtn">
+            🧬 產生 Story DNA
+          </button>
+          <button class="btn secondary" id="topBtn">🏆 只看 Top 10</button>
+          <button class="btn ghost" id="allBtn">📚 顯示全部</button>
+          <button class="btn ghost" id="exportBtn">💾 匯出 JSON</button>
+          <button class="btn ghost" id="copyTopBtn">📋 複製 Top 10</button>
+          <button class="btn danger" id="clearBtn">清除</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="status">
+          <div>
+            <h2 style="margin-bottom: 4px">🎬 Candidate Pool</h2>
+            <div class="statusText" id="statusText">尚未產生候選。</div>
+          </div>
+          <div class="stats">
+            <div class="stat">
+              Candidates <strong id="candidateStat">0</strong>
+            </div>
+            <div class="stat">Top 10 <strong id="topStat">0</strong></div>
+            <div class="stat">Favorites <strong id="favStat">0</strong></div>
+          </div>
+        </div>
+
+        <div class="toolbar" style="margin-top: 17px">
+          <div class="filters">
+            <button class="filter active" data-filter="all">全部</button>
+            <button class="filter" data-filter="top">🏆 Top 10</button>
+            <button class="filter" data-filter="favorite">⭐ 收藏</button>
+          </div>
+          <div class="note">
+            目前 Judge 使用本機規則評分；下方程式已預留 Ollama API。
+          </div>
+        </div>
+        <div id="cards" class="cards">
+          <div class="empty">按「產生 Story DNA」開始。</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>🤖 Qwen3 / Ollama 接口</h2>
+        <p class="note">
+          這個 HTML 預設不會呼叫 AI，因此直接開檔就能使用。若之後要接你的 Local
+          LLM， 可以把 <code>USE_OLLAMA</code> 改成
+          <code>true</code>，並設定你的 Ollama model。 函式
+          <code>judgeWithOllama()</code> 已經放在程式最後方。
+        </p>
+      </section>
+
+      <footer>
+        Story DNA Generator v1.0 · Designed for 45-second animation ideation
+      </footer>
+    </div>
+
+    <div class="sticky-mobile">
+      <button class="btn primary" id="mobileGenerate">🧬 產生</button>
+      <button class="btn secondary" id="mobileTop">🏆 Top 10</button>
+      <button class="btn ghost" id="mobileFav">⭐ 收藏</button>
+    </div>
+
+    <div class="modal" id="modal">
+      <div class="modal-box">
+        <div class="modal-head">
+          <h2>✨ Logline</h2>
+          <button class="close" id="closeModal">×</button>
+        </div>
+        <div id="modalDNA" class="note" style="margin-top: 10px"></div>
+        <textarea id="loglineText" readonly></textarea>
+        <div class="actions">
+          <button class="btn primary" id="copyLogline">📋 複製 Logline</button>
+          <button class="btn ghost" id="regenerateLogline">🔄 換一版</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /* =========================================================
+   Story DNA Generator
+   No external dependencies.
+   ========================================================= */
+
+      const DATA = {
+        emotion: [
+          "孤獨",
+          "遺憾",
+          "希望",
+          "嫉妒",
+          "愧疚",
+          "恐懼",
+          "好奇",
+          "失落",
+          "自由",
+          "歸屬感",
+          "被理解",
+          "不甘心",
+          "想念",
+          "驚喜",
+          "成長",
+        ],
+        style: [
+          "溫暖奇幻",
+          "黑色幽默",
+          "科幻寓言",
+          "都市奇幻",
+          "無聲動畫",
+          "童話暗黑",
+          "荒謬喜劇",
+          "詩意寫實",
+          "微型驚悚",
+          "療癒系",
+        ],
+        character: [
+          "不善表達的孩子",
+          "害怕改變的老人",
+          "孤單的機器人",
+          "笨拙的郵差",
+          "總是遲到的人",
+          "一隻固執的小動物",
+          "只會模仿別人的人",
+          "失去記憶的旅人",
+          "不被注意的清潔工",
+          "害怕黑暗的人",
+          "想成為英雄的小人物",
+          "不會說謊的人",
+        ],
+        world: [
+          "影子會替主人說真話",
+          "每個人每天只能說十個字",
+          "雨會帶走一段記憶",
+          "物品會記得曾經愛過它的人",
+          "所有東西都有倒數計時",
+          "夜晚時重力會消失",
+          "門只會通往你最害怕的地方",
+          "被遺忘的東西會重新出現在街上",
+          "情緒會變成可見的物體",
+          "時間只在沒人注意時前進",
+          "每個人都有一個看不見的陪伴者",
+          "夢境會在白天留下實體痕跡",
+        ],
+        symbol: [
+          "紙飛機",
+          "雨傘",
+          "舊照片",
+          "紅氣球",
+          "手電筒",
+          "鞋子",
+          "鐘",
+          "窗戶",
+          "紙箱",
+          "植物",
+          "燈泡",
+          "車票",
+          "鑰匙",
+          "玩具熊",
+          "杯子",
+        ],
+        desire: [
+          "想被某個人看見",
+          "想留住即將消失的東西",
+          "想證明自己不是多餘的",
+          "想回到某個重要的時刻",
+          "想完成一件一直不敢做的事",
+          "想把一個秘密交出去",
+          "想找到真正屬於自己的位置",
+          "想讓另一個人重新笑起來",
+          "想擺脫一個一直跟著自己的東西",
+          "想知道某件事的真相",
+        ],
+        obstacle: [
+          "每次靠近目標就會失去一段記憶",
+          "世界規則正好阻止他",
+          "他最大的恐懼會具象化",
+          "所有人都誤解了他的行動",
+          "時間正在快速倒數",
+          "他必須做出一次無法撤回的選擇",
+          "他發現自己才是問題的一部分",
+          "真正重要的東西就在眼前但看不見",
+          "他越努力控制事情，事情越失控",
+          "他必須先放棄原本想得到的東西",
+        ],
+        twist: [
+          "原來一直追逐的東西正在保護他",
+          "真正需要改變的人不是別人而是自己",
+          "看似敵人的存在其實在幫助他",
+          "他以為失去，其實是另一種得到",
+          "最後一刻世界規則被反轉",
+          "主角發現自己早已做過這個選擇",
+          "他追尋的答案一直藏在一個日常物件裡",
+          "原本的目標突然變得不重要",
+          "唯一能解決問題的方法是停止對抗",
+          "最後一個動作改變了前面所有畫面的意義",
+        ],
+        ending: [
+          "一個極簡但有餘韻的畫面",
+          "反差式幽默收尾",
+          "溫暖的視覺回扣",
+          "留下開放式問題",
+          "主角做出一個小小但重要的選擇",
+          "用一個物件完成情感轉折",
+          "前後畫面形成首尾呼應",
+          "沒有台詞，只靠動作完成結局",
+        ],
+      };
+
+      let candidates = [];
+      let currentFilter = "all";
+      let currentCandidateId = null;
+      let favorites = JSON.parse(
+        localStorage.getItem("storyDNAFavorites") || "[]",
+      );
+
+      const $ = (id) => document.getElementById(id);
+      const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+      function fillSelect(id, arr) {
+        $(id).innerHTML = arr.map((x) => `<option>${x}</option>`).join("");
+      }
+      fillSelect("emotion", DATA.emotion);
+      fillSelect("style", DATA.style);
+      fillSelect("character", DATA.character);
+      fillSelect("world", DATA.world);
+      fillSelect("symbol", DATA.symbol);
+
+      function hashString(str) {
+        let h = 2166136261;
+        for (let i = 0; i < str.length; i++) {
+          h ^= str.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return h >>> 0;
+      }
+
+      function scoreCandidate(c) {
+        const text = Object.values(c).join("|");
+        const h = hashString(text);
+        const base = (n) => 55 + ((h >>> n) % 31);
+
+        let originality = base(0);
+        let visual = base(5);
+        let emotion = base(10);
+        let feasibility = base(15);
+
+        // Heuristics: unusual combinations get a bonus.
+        if (c.world.includes("只在沒人注意")) originality += 7;
+        if (c.world.includes("倒數計時")) visual += 6;
+        if (c.world.includes("可見")) visual += 7;
+        if (
+          c.symbol === "紅氣球" ||
+          c.symbol === "紙飛機" ||
+          c.symbol === "影子"
+        )
+          visual += 4;
+        if (c.style === "無聲動畫") {
+          visual += 7;
+          emotion += 5;
+          feasibility += 5;
+        }
+        if ($("visual").checked) visual += 5;
+        if ($("strict").checked) feasibility += 5;
+
+        // Anti-cliché: penalize combinations that feel too familiar.
+        const clichéPairs = [
+          ["希望", "紙飛機"],
+          ["孤獨", "雨傘"],
+          ["遺憾", "舊照片"],
+          ["愛", "紅氣球"],
+          ["失落", "雨"],
+          ["恐懼", "黑暗"],
+        ];
+        if ($("anti").checked) {
+          for (const [a, b] of clichéPairs) {
+            if (c.emotion === a && c.symbol.includes(b)) originality -= 12;
+          }
+        }
+
+        originality = Math.max(35, Math.min(99, originality));
+        visual = Math.max(35, Math.min(99, visual));
+        emotion = Math.max(35, Math.min(99, emotion));
+        feasibility = Math.max(35, Math.min(99, feasibility));
+
+        let total = Math.round(
+          originality * 0.3 +
+            visual * 0.28 +
+            emotion * 0.24 +
+            feasibility * 0.18,
+        );
+        return { originality, visual, emotion, feasibility, total };
+      }
+
+      function makeCandidate() {
+        return {
+          emotion: $("emotion").value,
+          style: $("style").value,
+          character: $("character").value,
+          world: $("world").value,
+          desire: pick(DATA.desire),
+          obstacle: pick(DATA.obstacle),
+          symbol:
+            $("symbol").value === "隨機"
+              ? pick(DATA.symbol)
+              : $("symbol").value,
+          twist: pick(DATA.twist),
+          ending: pick(DATA.ending),
+        };
+      }
+
+      function candidateKey(c) {
+        return [
+          c.emotion,
+          c.style,
+          c.character,
+          c.world,
+          c.desire,
+          c.obstacle,
+          c.symbol,
+          c.twist,
+          c.ending,
+        ].join("§");
+      }
+
+      function generate() {
+        const target = Number($("count").value);
+        const set = new Set();
+        const pool = [];
+        let guard = 0;
+
+        while (pool.length < target && guard < target * 40) {
+          guard++;
+          const c = makeCandidate();
+          const key = candidateKey(c);
+          if (!set.has(key)) {
+            set.add(key);
+            c.id = crypto.randomUUID
+              ? crypto.randomUUID()
+              : Date.now() + "-" + Math.random();
+            c.scores = scoreCandidate(c);
+            pool.push(c);
+          }
+        }
+
+        pool.sort((a, b) => b.scores.total - a.scores.total);
+        candidates = pool;
+        candidates.forEach((c, i) => (c.rank = i + 1));
+
+        render();
+        $("statusText").textContent =
+          `已產生 ${candidates.length} 個候選，並完成本機 AI Judge 模擬評分。`;
+        window.scrollTo({
+          top:
+            document.querySelector("#cards").getBoundingClientRect().top +
+            window.scrollY -
+            90,
+          behavior: "smooth",
+        });
+      }
+
+      function isFavorite(c) {
+        return favorites.includes(c.id);
+      }
+
+      function render() {
+        const cards = $("cards");
+        let list = candidates;
+
+        if (currentFilter === "top") list = candidates.slice(0, 10);
+        if (currentFilter === "favorite") list = candidates.filter(isFavorite);
+
+        $("candidateStat").textContent = candidates.length;
+        $("topStat").textContent = Math.min(10, candidates.length);
+        $("favStat").textContent = favorites.length;
+
+        if (!list.length) {
+          cards.innerHTML = `<div class="empty">${currentFilter === "favorite" ? "目前沒有收藏。" : "尚未產生候選。"}</div>`;
+          return;
+        }
+
+        cards.innerHTML = list
+          .map((c) => {
+            const top = c.rank <= 10;
+            const fav = isFavorite(c);
+            return `
+    <article class="card ${top ? "top" : ""} ${fav ? "favorite" : ""}">
+      <div class="rank">#${c.rank}${top ? " · TOP" : ""}</div>
+      <h3>${escapeHTML(c.character)} × ${escapeHTML(c.world)}</h3>
+      <div class="badges">
+        <span class="badge good">Total ${c.scores.total}</span>
+        <span class="badge">${escapeHTML(c.emotion)}</span>
+        <span class="badge">${escapeHTML(c.style)}</span>
+        ${top ? '<span class="badge warn">值得發展</span>' : ""}
+      </div>
+
+      <div class="dna-grid">
+        ${item("核心情感", c.emotion)}
+        ${item("風格", c.style)}
+        ${item("主角", c.character)}
+        ${item("世界規則", c.world)}
+        ${item("慾望", c.desire)}
+        ${item("障礙", c.obstacle)}
+        ${item("視覺符號", c.symbol)}
+        ${item("反轉", c.twist)}
+        ${item("結局", c.ending)}
+      </div>
+
+      <div class="scores">
+        ${score("Original", c.scores.originality)}
+        ${score("Visual", c.scores.visual)}
+        ${score("Emotion", c.scores.emotion)}
+        ${score("45-sec", c.scores.feasibility)}
+      </div>
+
+      ${c.logline ? `<div class="logline">${escapeHTML(c.logline)}</div>` : ""}
+
+      <div class="card-actions">
+        <button class="btn primary" onclick="openLogline('${c.id}')">✨ 產生 Logline</button>
+        <button class="btn ghost" onclick="toggleFavorite('${c.id}')">${fav ? "★ 已收藏" : "☆ 收藏"}</button>
+        <button class="btn ghost" onclick="copyDNA('${c.id}')">📋 複製 DNA</button>
+      </div>
+    </article>`;
+          })
+          .join("");
+      }
+
+      function item(k, v) {
+        return `<div class="dna-item"><div class="k">${k}</div><div class="v">${escapeHTML(v)}</div></div>`;
+      }
+      function score(k, v) {
+        return `<div class="score"><small>${k}</small><b>${v}</b></div>`;
+      }
+      function escapeHTML(s) {
+        return String(s).replace(
+          /[&<>"']/g,
+          (m) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#039;",
+            })[m],
+        );
+      }
+
+      function makeLogline(c) {
+        const templates = [
+          `當「${c.world}」的規則突然影響到${c.character}時，主角為了${c.desire}而採取行動，卻發現${c.obstacle}；直到${c.twist}，他只能用一個看似微小的選擇，面對「${c.emotion}」。`,
+          `${c.character}一直想${c.desire}，直到某天「${c.world}」讓這件事變得不可能；為了突破${c.obstacle}，他必須接受${c.twist}，最後以${c.ending}結束這場意外的旅程。`,
+          `在一個「${c.world}」的世界裡，${c.character}帶著${c.symbol}追尋${c.desire}，卻被迫面對${c.obstacle}；當${c.twist}發生時，他終於明白真正需要改變的，是自己對「${c.emotion}」的理解。`,
+        ];
+        return pick(templates);
+      }
+
+      function openLogline(id) {
+        const c = candidates.find((x) => x.id === id);
+        if (!c) return;
+        currentCandidateId = id;
+        c.logline = makeLogline(c);
+        $("modalDNA").textContent =
+          `#${c.rank} · ${c.emotion} · ${c.style} · ${c.character}`;
+        $("loglineText").value = c.logline;
+        $("modal").classList.add("show");
+        render();
+      }
+      function closeModal() {
+        $("modal").classList.remove("show");
+      }
+      function regenerateLogline() {
+        if (!currentCandidateId) return;
+        const c = candidates.find((x) => x.id === currentCandidateId);
+        c.logline = makeLogline(c);
+        $("loglineText").value = c.logline;
+        render();
+      }
+      async function copyText(text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch (e) {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+          return true;
+        }
+      }
+      function copyDNA(id) {
+        const c = candidates.find((x) => x.id === id);
+        if (!c) return;
+        const text = `Story DNA #${c.rank}
+情感：${c.emotion}
+風格：${c.style}
+主角：${c.character}
+世界規則：${c.world}
+慾望：${c.desire}
+障礙：${c.obstacle}
+視覺符號：${c.symbol}
+反轉：${c.twist}
+結局：${c.ending}
+Score：${c.scores.total}`;
+        copyText(text).then(() => alert("DNA 已複製"));
+      }
+      function toggleFavorite(id) {
+        if (favorites.includes(id))
+          favorites = favorites.filter((x) => x !== id);
+        else favorites.push(id);
+        localStorage.setItem("storyDNAFavorites", JSON.stringify(favorites));
+        render();
+      }
+      function copyTop() {
+        if (!candidates.length) return alert("請先產生候選。");
+        const text = candidates
+          .slice(0, 10)
+          .map(
+            (c) =>
+              `#${c.rank} | Score ${c.scores.total}
+${c.character} × ${c.world}
+情感：${c.emotion}｜風格：${c.style}
+慾望：${c.desire}
+障礙：${c.obstacle}
+符號：${c.symbol}
+反轉：${c.twist}
+結局：${c.ending}
+${c.logline ? "Logline：" + c.logline : ""}`,
+          )
+          .join("\\n\\n");
+        copyText(text).then(() => alert("Top 10 已複製"));
+      }
+      function exportJSON() {
+        if (!candidates.length) return alert("請先產生候選。");
+        const data = {
+          generatedAt: new Date().toISOString(),
+          settings: {
+            emotion: $("emotion").value,
+            style: $("style").value,
+            character: $("character").value,
+            world: $("world").value,
+            symbol: $("symbol").value,
+            count: $("count").value,
+            antiCliche: $("anti").checked,
+            visualFirst: $("visual").checked,
+            strict45sec: $("strict").checked,
+          },
+          candidates,
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+          type: "application/json",
+        });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "story-dna-" + Date.now() + ".json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
+      function clearAll() {
+        candidates = [];
+        $("cards").innerHTML =
+          '<div class="empty">按「產生 Story DNA」開始。</div>';
+        $("statusText").textContent = "已清除候選。";
+        $("candidateStat").textContent = "0";
+        $("topStat").textContent = "0";
+      }
+
+      document.querySelectorAll(".filter").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".filter")
+            .forEach((x) => x.classList.remove("active"));
+          btn.classList.add("active");
+          currentFilter = btn.dataset.filter;
+          render();
+        });
+      });
+      $("generateBtn").onclick = generate;
+      $("mobileGenerate").onclick = generate;
+      $("topBtn").onclick = () => {
+        currentFilter = "top";
+        setFilter("top");
+        render();
+      };
+      $("mobileTop").onclick = () => {
+        currentFilter = "top";
+        setFilter("top");
+        render();
+      };
+      $("allBtn").onclick = () => {
+        currentFilter = "all";
+        setFilter("all");
+        render();
+      };
+      $("mobileFav").onclick = () => {
+        currentFilter = "favorite";
+        setFilter("favorite");
+        render();
+      };
+      $("copyTopBtn").onclick = copyTop;
+      $("exportBtn").onclick = exportJSON;
+      $("clearBtn").onclick = clearAll;
+      $("closeModal").onclick = closeModal;
+      $("regenerateLogline").onclick = regenerateLogline;
+      $("copyLogline").onclick = () =>
+        copyText($("loglineText").value).then(() => alert("Logline 已複製"));
+      $("modal").addEventListener("click", (e) => {
+        if (e.target === $("modal")) closeModal();
+      });
+
+      function setFilter(name) {
+        document
+          .querySelectorAll(".filter")
+          .forEach((x) =>
+            x.classList.toggle("active", x.dataset.filter === name),
+          );
+      }
+
+      /* =========================================================
+   Ollama integration placeholder
+   ========================================================= */
+
+      const USE_OLLAMA = false;
+      const OLLAMA_URL = "http://localhost:11434/api/chat";
+      const OLLAMA_MODEL = "qwen3:14b";
+
+      /*
+async function judgeWithOllama(candidateBatch){
+  const prompt = `
+你是一名45秒動畫的 Story Judge。
+請針對以下 Story DNA，分別評估：
+1. originality 0-100
+2. visual 0-100
+3. emotion 0-100
+4. feasibility 0-100
+5. total 0-100
+
+要求：
+- 避免常見套路
+- 45秒內能用畫面講清楚
+- 優先考慮「少量角色、少量場景、強烈視覺概念」
+- 回傳純 JSON array，不要 Markdown。
+
+Story DNA:
+${JSON.stringify(candidateBatch)}
+`;
+
+  const response = await fetch(OLLAMA_URL,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      model:OLLAMA_MODEL,
+      messages:[
+        {role:"system",content:"You are a concise animation story judge."},
+        {role:"user",content:prompt}
+      ],
+      stream:false,
+      format:"json"
+    })
+  });
+
+  if(!response.ok) throw new Error("Ollama API request failed");
+  const data=await response.json();
+  return JSON.parse(data.message.content);
+}
+*/
+    </script>
+  </body>
+</html>
